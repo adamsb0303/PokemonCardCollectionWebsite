@@ -14,22 +14,15 @@
             </tr>
         </table>
 
-        <h1 style="text-align: center">Card Sets</h1>
-        <h2 id="Title 1"><a href="#WoTC Black Star Promos">> Generation 1</a></h2>
-        
-        <h2 id="Title 2"><a href="#Neo Genesis">> Generation 2</a></h2>
-        
-        <h2 id="Title 3"><a href="#Nintendo Black Star Promos">> Generation 3</a></h2>
-        
-        <h2 id="Title 4"><a href="#DP Black Star Promos">> Generation 4</a></h2>
-        
-        <h2 id="Title 5"><a href="#BW Black Star Promos">> Generation 5</a></h2>
-        
-        <h2 id="Title 6"><a href="#XY Black Star Promos">> Generation 6</a></h2>
-        
-        <h2 id="Title 7"><a href="#SM Black Star Promos">> Generation 7</a></h2>
-        
-        <h2 id="Title 8"><a href="#SWSH Black Star Promos">> Generation 8</a></h2>
+        <text>Card Sets</text> <br />
+        <a href="#WoTC Black Star Promos">> Generation 1</a> <br />
+        <a href="#Neo Genesis">> Generation 2</a> <br />
+        <a href="#Nintendo Black Star Promos">> Generation 3</a> <br />
+        <a href="#DP Black Star Promos">> Generation 4</a> <br />
+        <a href="#BW Black Star Promos">> Generation 5</a> <br />
+        <a href="#XY Black Star Promos">> Generation 6</a> <br />
+        <a href="#SM Black Star Promos">> Generation 7</a> <br />
+        <a href="#SWSH Black Star Promos">> Generation 8</a>
 
         <p>
             <?php
@@ -47,11 +40,11 @@
                     if($i === 4)
                         $subsetnames = array('Completion');
 
-                    echo '<div id="' . $row['name'] . '" class="setnames">' .
+                    echo '<div id="' . $row['set_name'] . '" class="setnames">' .
                         '<div class="leftSection">' .
                             '<div style="height: 100%;  width: 100%; text-align: center; white-space:nowrap;">' .
-                                '<a href="Card_Sets/Pages/' . $row['name'] . '.html"><text id="' . $row['name'] . '" >' . $row['name'] . '</text></a> <br />' .
-                                '<img src="Card_Sets/Logos/' . $row['name'] . '.png" alt="' . $row['name'] . ' Set Symbol" class="setImage"> <br />' .
+                                '<a href="Card_Sets/Pages/' . $row['set_name'] . '.html"><text id="' . $row['set_name'] . '" >' . $row['set_name'] . '</text></a> <br />' .
+                                '<img src="Card_Sets/Logos/' . $row['set_name'] . '.png" alt="' . $row['set_name'] . ' Set Symbol" class="setImage"> <br />' .
                             '</div>' .
                         '</div>' .
                         '<div class="rightSection">';
