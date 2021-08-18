@@ -43,7 +43,7 @@
                     echo '<div id="' . $row['set_name'] . '" class="setnames">' .
                         '<div class="leftSection">' .
                             '<div style="height: 100%;  width: 100%; text-align: center; white-space:nowrap;">' .
-                                '<a href="Card_Sets/Pages/' . $row['set_name'] . '.html"><text id="' . $row['set_name'] . '" >' . $row['set_name'] . '</text></a> <br />' .
+                                '<a href="./set.php?set=' . $row['set_name'] . '"><text id="' . $row['set_name'] . '" >' . $row['set_name'] . '</text></a> <br />' .
                                 '<img src="Card_Sets/Logos/' . $row['set_name'] . '.png" alt="' . $row['set_name'] . ' Set Symbol" class="setImage"> <br />' .
                             '</div>' .
                         '</div>' .
