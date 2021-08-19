@@ -26,7 +26,7 @@
 
         <p>
             <?php
-                include_once 'connect.php';
+                include_once 'php/connect.php';
                 $sql = "SELECT * FROM `set`";
                 $result = mysqli_query($link, $sql) or die(mysqli_error($link));
 

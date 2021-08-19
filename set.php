@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!--<script src="Card Collection Script.js"></script>-->
+        <script src="setPage.js"></script>
         <link rel="stylesheet" href="setPage.css">
     </head>
     <body>
-        <div class="header" style="">
+        <div class="header">
             <?php
-                include_once 'connect.php';
+                include_once 'php/connect.php';
                 $name = $_GET['set'];
 
                 $sql = "SELECT * FROM `set` WHERE set_name = '$name'";
                 $result = mysqli_query($link, $sql) or die(mysqli_error($link));
                 $row = mysqli_fetch_array($result);
-                echo '<img src="Card_Sets/Logos/' . $row['set_name'] . '.png" alt="' . $row['set_name'] . ' Set Symbol">' . '<br />';
+                echo '<img src="Card_Sets/Logos/' . $row['set_name'] . '.png" alt="' . $row['set_name'] . ' Set Symbol" style="width:25vw; height:auto;">' . '<br />';
                 echo $name . '<br />';
                 echo "Set Size: " . $row['set_size'] . '<br />';
                 echo "Progress: ";
@@ -62,31 +62,6 @@
                         echo '<td>';
                             echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟&nbsp;&nbsp;' . $variant['variant_name'];
                         echo '</td>';
-                        //Market Price
-                        echo '<td>';
-                            echo '$99999.99';
-                        echo '</td>';
-                        //Average Price
-                        echo '<td>';
-                            echo '$99999.99';
-                        echo '</td>';
-                        //Price Purchased
-                        echo '<td>';
-                            echo '$99999.99';
-                        echo '</td>';
-                        //Date Purchased
-                        echo '<td>';
-                            echo '<input type="date"></input>';
-                        echo '</td>';
-                        //# in Inventory
-                        echo '<td>';
-                            echo '9999999';
-                        echo '</td>';
-                        //Submit Button
-                        echo '<td>';
-                            echo '<button>Submit</button>';
-                        echo '</td>';
-                    echo '</tr>';
                 } else{
                     echo '<tr class="cardRow">';
                         //Set Num
@@ -97,32 +72,33 @@
                         echo '<td>';
                             echo $variant['card_name'];
                         echo '</td>';
-                        //Market Price
-                        echo '<td>';
-                            echo '$99999.99';
-                        echo '</td>';
-                        //Average Price
-                        echo '<td>';
-                            echo '$99999.99';
-                        echo '</td>';
-                        //Price Purchased
-                        echo '<td>';
-                            echo '$99999.99';
-                        echo '</td>';
-                        //Date Purchased
-                        echo '<td>';
-                            echo '<input type="date"></input>';
-                        echo '</td>';
-                        //# in Inventory
-                        echo '<td>';
-                            echo '9999999';
-                        echo '</td>';
-                        //Submit Button
-                        echo '<td>';
-                            echo '<button>Submit</button>';
-                        echo '</td>';
-                    echo '</tr>';
                 }
+                //Market Price
+                echo '<td>';
+                    echo '<text id="MP_' . $variant['card_id'] . '">$99999.99</text>';
+                echo '</td>';
+                //Average Price
+                echo '<td>';
+                    echo '<text id="AV_' . $variant['card_id'] . '">$99999.99</text>';
+                echo '</td>';
+                //Price Purchased
+                echo '<td id="Price Purchased">';
+                    echo '<input id="PP_' . $variant['card_id'] . '" type="text" oninput="formatCurrency(' . $variant['card_id'] . ')" placeholder = "$0.00"/>';
+                    echo '<button title="Calculates price based off potential pulls" type="button">From Pack</button>';
+                echo '</td>';
+                //Date Purchased
+                echo '<td id="Date Purchased">';
+                    echo '<input id="DP_' . $variant['card_id'] . '" type="date"></input>';
+                echo '</td>';
+                //# in Inventory
+                echo '<td id="Number in Inventory">';
+                    echo '<text id="INV_' . $variant['card_id'] . '">0</text>';
+                echo '</td>';
+                //Submit Button
+                echo '<td>';
+                    echo '<button type="submit" onclick="addToInventory(' . $variant['card_id'] . ')">Add to Inventory</button>';
+                echo '</td>';
+            echo '</tr>';
             }
             echo '</table>';
         ?>
