@@ -1,33 +1,40 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!--<script src="Card Collection Script.js"></script>
-        <link rel="stylesheet" href="Card Collection StyleSheet.css">-->
+        <!--<script src="Card Collection Script.js"></script>-->
+        <link rel="stylesheet" href="setPage.css">
     </head>
     <body>
-        <table style="margin-left: auto; margin-right: auto;">
-            <tr>
-                <td>
-                    <h1 style="border: 2px solid black; border-radius: 5px;">Testing Testing Testing</h1>
-                </td>
-            </tr>
-        </table>
+        <div class="header" style="">
+            <?php
+                include_once 'connect.php';
+                $name = $_GET['set'];
 
+                $sql = "SELECT * FROM `set` WHERE set_name = '$name'";
+                $result = mysqli_query($link, $sql) or die(mysqli_error($link));
+                $row = mysqli_fetch_array($result);
+                echo '<img src="Card_Sets/Logos/' . $row['set_name'] . '.png" alt="' . $row['set_name'] . ' Set Symbol">' . '<br />';
+                echo $name . '<br />';
+                echo "Set Size: " . $row['set_size'] . '<br />';
+                echo "Progress: ";
+            ?>
+        </div>
+
+        <br />
 
         <?php
             $name = $_GET['set'];
-            include_once 'connect.php';
 
             $sql = "SELECT * FROM `card` INNER JOIN `variant` ON card.variant_id = variant.variant_id
                     WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')";
 
             $variant_result = mysqli_query($link, $sql) or die(mysqli_error($link));
 
-            echo '<table style="margin-left:auto; margin-right:auto">';
+            echo '<table>';
                 echo '<th>';
                     echo 'Set Num';
                 echo '</th>';
-                echo '<th>';
+                echo '<th style="text-align:left;">';
                     echo 'Name';
                 echo '</th>';
                 echo '<th>';
@@ -45,26 +52,27 @@
                 echo '<th>';
                     echo '# in Inventory';
                 echo '</th>';
-                echo '<th>';
-                echo '</th>';
             while($variant = mysqli_fetch_array($variant_result)){
                 if($variant['variant_name'] !== 'Normal'){
-                    echo '<tr>';
+                    echo '<tr class="variantRow">';
                         //Set Num
                         echo '<td>';
                         echo '</td>';
                         //Card Name
                         echo '<td>';
-                            echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $variant['variant_name'];
+                            echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟&nbsp;&nbsp;' . $variant['variant_name'];
                         echo '</td>';
                         //Market Price
                         echo '<td>';
+                            echo '$99999.99';
                         echo '</td>';
                         //Average Price
                         echo '<td>';
+                            echo '$99999.99';
                         echo '</td>';
                         //Price Purchased
                         echo '<td>';
+                            echo '$99999.99';
                         echo '</td>';
                         //Date Purchased
                         echo '<td>';
@@ -72,10 +80,15 @@
                         echo '</td>';
                         //# in Inventory
                         echo '<td>';
+                            echo '9999999';
+                        echo '</td>';
+                        //Submit Button
+                        echo '<td>';
+                            echo '<button>Submit</button>';
                         echo '</td>';
                     echo '</tr>';
                 } else{
-                    echo '<tr>';
+                    echo '<tr class="cardRow">';
                         //Set Num
                         echo '<td>';
                             echo $variant['set_num'];
@@ -86,12 +99,15 @@
                         echo '</td>';
                         //Market Price
                         echo '<td>';
+                            echo '$99999.99';
                         echo '</td>';
                         //Average Price
                         echo '<td>';
+                            echo '$99999.99';
                         echo '</td>';
                         //Price Purchased
                         echo '<td>';
+                            echo '$99999.99';
                         echo '</td>';
                         //Date Purchased
                         echo '<td>';
@@ -99,6 +115,11 @@
                         echo '</td>';
                         //# in Inventory
                         echo '<td>';
+                            echo '9999999';
+                        echo '</td>';
+                        //Submit Button
+                        echo '<td>';
+                            echo '<button>Submit</button>';
                         echo '</td>';
                     echo '</tr>';
                 }
