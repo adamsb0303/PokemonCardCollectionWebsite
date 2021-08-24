@@ -70,20 +70,20 @@
                         echo '</td>';
                         //Card Name
                         echo '<td>';
-                            echo $variant['card_name'];
+                            echo '<a href="https://www.tcgplayer.com/product/' . $variant['product_id'] . '">' . $variant['card_name'] . '</a>';
                         echo '</td>';
                 }
                 //Market Price
                 echo '<td>';
-                    echo '<text id="MP_' . $variant['card_id'] . '">$99999.99</text>';
+                    echo '<text id="MP_' . $variant['card_id'] . '">$' . $variant['market_price'] . '</text>';
                 echo '</td>';
                 //Average Price
                 echo '<td>';
-                    echo '<text id="AV_' . $variant['card_id'] . '">$99999.99</text>';
+                    echo '<text id="AV_' . $variant['card_id'] . '">$' . $variant['average_price'] . '</text>';
                 echo '</td>';
                 //Price Purchased
                 echo '<td id="Price Purchased">';
-                    echo '<input id="PP_' . $variant['card_id'] . '" type="text" oninput="formatCurrency(' . $variant['card_id'] . ')" placeholder = "$0.00"/>';
+                    echo '<input id="PP_' . $variant['card_id'] . '" type="number" min="0" step="0.01" placeholder = "$0.00"/>';
                     echo '<button title="Calculates price based off potential pulls" type="button">From Pack</button>';
                 echo '</td>';
                 //Date Purchased
