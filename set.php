@@ -30,6 +30,9 @@
 
             $variant_result = mysqli_query($link, $sql) or die(mysqli_error($link));
 
+            $marketPrice = 0;
+            $averagePrice = 0;
+
             echo '<table>';
                 echo '<th>';
                     echo 'Set Num';
@@ -79,10 +82,12 @@
                 //Market Price
                 echo '<td>';
                     echo '<text id="MP_' . $variant['card_id'] . '">$' . $variant['market_price'] . '</text>';
+                    $marketPrice += $variant['market_price'];
                 echo '</td>';
                 //Average Price
                 echo '<td>';
                     echo '<text id="AV_' . $variant['card_id'] . '">$' . $variant['average_price'] . '</text>';
+                    $averagePrice += $variant['average_price'];
                 echo '</td>';
                 //Price Purchased
                 echo '<td id="Price Purchased">';
@@ -113,6 +118,26 @@
                 echo '</td>';
             echo '</tr>';
             }
+            echo '<tr class="cardRow">';
+                echo '<td>';
+                echo '</td>';
+                echo '<td style="text-align:left;">';
+                echo '</td>';
+                echo '<td>';
+                    echo "$" . number_format($marketPrice, 2);
+                echo '</td>';
+                echo '<td>';
+                    echo "$" . number_format($averagePrice, 2);
+                echo '</td>';
+                echo '<td>';
+                echo '</td>';
+                echo '<td>';
+                echo '</td>';
+                echo '<td>';
+                echo '</td>';
+                echo '<td>';
+                echo '</td>';
+            echo '</tr>';
             echo '</table>';
         ?>
     </body>
