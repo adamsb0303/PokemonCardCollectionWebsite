@@ -50,6 +50,9 @@
                     echo 'Date Purchased';
                 echo '</th>';
                 echo '<th>';
+                    echo 'Condition';
+                echo '</th>';
+                echo '<th>';
                     echo '# in Inventory';
                 echo '</th>';
             while($variant = mysqli_fetch_array($variant_result)){
@@ -89,6 +92,16 @@
                 //Date Purchased
                 echo '<td id="Date Purchased">';
                     echo '<input id="DP_' . $variant['card_id'] . '" type="date"></input>';
+                echo '</td>';
+                //Condition
+                echo '<td id="Date Purchased">';
+                    echo '<select id="CND_' . $variant['card_id'] . '">';
+                        echo '<option value="Near Mint">NM</option>';
+                        echo '<option value="Light Played">LP</option>';
+                        echo '<option value="Medium Played">MP</option>';
+                        echo '<option value="Heavy Played">HP</option>';
+                        echo '<option value="Damaged">DMG</option>';
+                    echo '</select>';
                 echo '</td>';
                 //# in Inventory
                 echo '<td id="Number in Inventory">';
