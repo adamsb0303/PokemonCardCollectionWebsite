@@ -30,8 +30,8 @@
 
             $variant_result = mysqli_query($link, $sql) or die(mysqli_error($link));
 
-            $marketPrice = 0;
-            $averagePrice = 0;
+            $marketPriceSum = 0;
+            $averagePriceSum = 0;
 
             echo '<table>';
                 echo '<th>';
@@ -81,13 +81,19 @@
                 }
                 //Market Price
                 echo '<td>';
-                    echo '<text id="MP_' . $variant['card_id'] . '">$' . $variant['market_price'] . '</text>';
-                    $marketPrice += $variant['market_price'];
+                    if($variant['market_price'] != 0){
+                        echo '<text id="MP_' . $variant['card_id'] . '">$' . $variant['market_price'] . '</text>';
+                        $marketPriceSum += $variant['market_price'];
+                    }else
+                        echo '<text id="MP_' . $variant['card_id'] . '">-</text>';
                 echo '</td>';
                 //Average Price
                 echo '<td>';
-                    echo '<text id="AV_' . $variant['card_id'] . '">$' . $variant['average_price'] . '</text>';
-                    $averagePrice += $variant['average_price'];
+                    if($variant['average_price'] != 0){
+                        echo '<text id="AV_' . $variant['card_id'] . '">$' . $variant['average_price'] . '</text>';
+                        $averagePriceSum += $variant['average_price'];
+                    }else
+                        echo '<text id="AV_' . $variant['card_id'] . '">-</text>'; 
                 echo '</td>';
                 //Price Purchased
                 echo '<td id="Price Purchased">';
@@ -124,10 +130,10 @@
                 echo '<td style="text-align:left;">';
                 echo '</td>';
                 echo '<td>';
-                    echo "$" . number_format($marketPrice, 2);
+                    echo "$" . number_format($marketPriceSum, 2);
                 echo '</td>';
                 echo '<td>';
-                    echo "$" . number_format($averagePrice, 2);
+                    echo "$" . number_format($averagePriceSum, 2);
                 echo '</td>';
                 echo '<td>';
                 echo '</td>';
