@@ -1,30 +1,48 @@
 <?php
     //300 requests per minute max
     //expires 9/5
-    include "bearer_token.php";
-    $product_id = 106999;
+    include "connect.php";
+    include_once "bearer_token.php";
+    set_time_limit(60000);
 
-    include_once "connect.php";
-    $productPrices = getProductDetails($product_id, $bearerToken);
-
-    $sql = "SELECT * FROM `card` WHERE `card`.`product_id` = $product_id";
+    $sql = "SELECT * FROM `card` GROUP BY `product_id`";
     $result = mysqli_query($link, $sql) or die(mysqli_error($link));
 
-    $firstCardRow = mysqli_fetch_array($result);
-    $firstCardIDIndex = $firstCardRow['card_id'];
+    $index = 1;
+    while($row = mysqli_fetch_array($result)){
+        if($row['product_id'] != 0){
+            updateCardPrice($row['product_id'], $bearerToken);
+        }
+        if($index % 300 == 0){
+            sleep(60);
+        }  
+        $index++;
+    }
 
-    $cardIDIndex = 0;
-    for($i = 0; $i < count($productPrices); $i++){
-        if($productPrices[$i]->marketPrice != null){
-            $marketprice = $productPrices[$i]->marketPrice;
-            $marketaverage = $productPrices[$i]->midPrice;
+    function updateCardPrice($product_id, $bearerToken){
+        include "connect.php";
+        $productPrices = getProductDetails($product_id, $bearerToken);
+    
+        $sql = "SELECT * FROM `card` WHERE `card`.`product_id` = $product_id";
+        $result = mysqli_query($link, $sql) or die(mysqli_error($link));
+    
+        $firstCardRow = mysqli_fetch_array($result);
+        $cardIDIndex = $firstCardRow['card_id'];
+        for($i = 0; $i < count($productPrices); $i++){
+            if($productPrices[$i]->marketPrice != null){
+                $marketprice = $productPrices[$i]->marketPrice;
+                $marketaverage = $productPrices[$i]->midPrice;
 
-            $sql = "UPDATE `card` SET `market_price` = $marketprice WHERE `card`.`card_id` = $firstCardIDIndex + $cardIDIndex";
-            $result = mysqli_query($link, $sql) or die(mysqli_error($link));
-            
-            $sql = "UPDATE `card` SET `average_price` = $marketaverage WHERE `card`.`card_id` = $firstCardIDIndex + $cardIDIndex";
-            $result = mysqli_query($link, $sql) or die(mysqli_error($link));
-            $cardIDIndex++;
+                $marketprice = ($marketprice == null) ? 0 : $marketprice;
+                $marketaverage = ($marketaverage == null) ? 0 : $marketaverage;
+
+    
+                $sql = "UPDATE `card` SET `market_price` = $marketprice, `average_price` = $marketaverage WHERE `card_id` = $cardIDIndex";
+                echo $sql . '<br/>';
+                $result = mysqli_query($link, $sql) or die(mysqli_error($link));
+
+                $cardIDIndex++;
+            }
         }
     }
 
