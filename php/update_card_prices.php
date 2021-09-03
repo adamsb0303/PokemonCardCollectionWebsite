@@ -36,7 +36,6 @@
                 $marketprice = ($marketprice == null) ? 0 : $marketprice;
                 $marketaverage = ($marketaverage == null) ? 0 : $marketaverage;
 
-    
                 $sql = "UPDATE `card` SET `market_price` = $marketprice, `average_price` = $marketaverage WHERE `card_id` = $cardIDIndex";
                 echo $sql . '<br/>';
                 $result = mysqli_query($link, $sql) or die(mysqli_error($link));

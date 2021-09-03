@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="setPage.js"></script>
-        <link rel="stylesheet" href="setPage.css">
+        <link rel="stylesheet" href="CSS/setPage.css">
     </head>
     <body>
         <div class="header">
@@ -13,7 +12,7 @@
                 $sql = "SELECT * FROM `set` WHERE set_name = '$name'";
                 $result = mysqli_query($link, $sql) or die(mysqli_error($link));
                 $row = mysqli_fetch_array($result);
-                echo '<img src="Card_Sets/Logos/' . $row['set_name'] . '.png" alt="' . $row['set_name'] . ' Set Symbol" style="width:25vw; height:auto;">' . '<br />';
+                echo '<img src="Images/Logos/' . $row['set_name'] . '.png" alt="' . $row['set_name'] . ' Set Symbol" style="width:25vw; height:auto;">' . '<br />';
                 echo $name . '<br />';
                 echo "Set Size: " . $row['set_size'] . '<br />';
                 echo "Progress: ";
