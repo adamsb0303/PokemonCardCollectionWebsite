@@ -16,8 +16,6 @@
             $variant_result = mysqli_query($link, $sql) or die(mysqli_error($link));
 
             $cardAmount = 0;
-            $marketPriceSum = 0;
-            $averagePriceSum = 0;
 
             $cardTable = '<table>' .
                 '<th>' .
@@ -68,18 +66,16 @@
                 }
                 //Market Price
                 $cardTable .= '<td>';
-                    if($variant['market_price'] != 0){
+                    if($variant['market_price'] != 0)
                         $cardTable .= '<text id="MP_' . $variant['card_id'] . '">$' . $variant['market_price'] . '</text>';
-                        $marketPriceSum += $variant['market_price'];
-                    }else
+                    else
                         $cardTable .= '<text id="MP_' . $variant['card_id'] . '">-</text>';
                 $cardTable .= '</td>' .
                 //Average Price
                 '<td>';
-                    if($variant['average_price'] != 0){
+                    if($variant['average_price'] != 0)
                         $cardTable .= '<text id="AV_' . $variant['card_id'] . '">$' . $variant['average_price'] . '</text>';
-                        $averagePriceSum += $variant['average_price'];
-                    }else
+                    else
                         $cardTable .= '<text id="AV_' . $variant['card_id'] . '">-</text>'; 
                 $cardTable .= '</td>' .
                 //Price Purchased
@@ -120,8 +116,9 @@
                 echo '<img src="Images/Logos/' . $row['set_name'] . '.png" alt="' . $row['set_name'] . ' Set Symbol" style="width:25vw; height:auto;">' . '<br />';
                 echo $name . '<br />';
                 echo "Set Size: " . $row['set_size'] . '<br />';
+                echo "Set Market Price: $" . number_format($row['set_price'], 2) . '<br />';
                 echo "Master Set Size: " . $cardAmount . '<br />';
-                echo "Master Set Market Price: $" . number_format($marketPriceSum, 2) . '<br />';
+                echo "Master Set Market Price: $" . number_format($row['Mset_price'], 2) . '<br />';
                 echo "Progress: ";
             echo '</div><br/>';
 
