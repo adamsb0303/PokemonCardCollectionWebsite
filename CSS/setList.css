@@ -1,3 +1,26 @@
+table{
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+td {
+    text-align: center;
+    border: 1px solid black;
+    padding: 8px;
+}
+
+progress {
+    width: 90%;
+}
+
+td:nth-child(2){
+    align-items: left;
+    text-align: left;
+    width: 100%;
+}
+
 .setnames{
     border: 1px solid black;
     border-radius:5px;
