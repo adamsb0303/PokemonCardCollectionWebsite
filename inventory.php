@@ -13,76 +13,107 @@
             include_once 'php/connect.php';
             if(isset($_POST['submit'])){
                 $userID = 1;
-                $cardID = rand(1, 26329);
-                $condition = 'LP';
-                $purchasePrice = 0.75;
-                $purchaseDate = '2021-09-06';
+                $cardID = $_POST['cardID'];
+                $condition = $_POST['condition'];
+                $purchasePrice = $_POST['price'];
+                $purchaseDate = $_POST['date'];
                 
-                $sql = "INSERT INTO `collection` (`user_id`, `card_id`, `condition`, `purchase_price`, `purchase_date`) VALUES ($userID, $cardID, 'LP', $purchasePrice, '$purchaseDate');";
+                $sql = "INSERT INTO `collection` (`user_id`, `card_id`, `condition`, `purchase_price`, `purchase_date`) VALUES ($userID, $cardID, '$condition', $purchasePrice, '$purchaseDate');";
                 mysqli_query($link, $sql) or die(mysqli_error($link));
             }
             
-            echo '<form method="post">';
+            echo '<form method="post">' .
+                //Card ID
+                '<text>Card ID: </text>' .
+                '<input name="cardID"/>' .
+                '<br/>' .
                 //Price Purchased
-                echo '<text>Price Purchased: </text>';
-                echo '<input type="number" min="0" step="0.01" placeholder = "$0.00"/>';
-                echo '<button title="Calculates price based off potential pulls">From Pack</button>';
-                echo '<br/>';
+                '<text>Price Purchased: </text>' .
+                '<input type="number" min="0" step="0.01" placeholder = "$0.00" name="price"/>' .
+                '<button title="Calculates price based off potential pulls">From Pack</button>' .
+                '<br/>' .
                 //Date Purchased
-                echo '<text>Date Purchased: </text>';
-                echo '<input type="date"></input>';
-                echo '<br/>';
+                '<text>Date Purchased: </text>' .
+                '<input type="date" name="date"></input>' .
+                '<br/>' .
                 //Condition
-                echo '<text>Condition: </text>';
-                echo '<select>' .
-                        '<option value="Near Mint">NM</option>' .
-                        '<option value="Light Played">LP</option>' .
-                        '<option value="Medium Played">MP</option>' .
-                        '<option value="Heavy Played">HP</option>' .
-                        '<option value="Damaged">DMG</option>' .
-                    '</select>';
-                echo '<br/>';
+                '<text>Condition: </text>' .
+                '<select name="condition">' .
+                        '<option value="NM">NM</option>' .
+                        '<option value="LP">LP</option>' .
+                        '<option value="MP">MP</option>' .
+                        '<option value="HP">HP</option>' .
+                        '<option value="DMG">DMG</option>' .
+                    '</select>' .
+                '<br/>' .
                 //Submit
-                echo '<input type="submit" name="submit" value="Submit"/>';
-                echo '<br/><br/>';
-            echo '</form>';
+                '<input type="submit" name="submit" value="Submit"/>' .
+                '<br/><br/>' .
+            '</form>';
 
-            $sql = "SELECT * FROM `collection`";
+            $totalGain = 0;
+            $invTable = '';
+
+            $sql = "SELECT * FROM `collection`
+                    JOIN `card` ON `collection`.`card_id` = `card`.`card_id`
+                    JOIN `set` ON `card`.`set_id` = `set`.`set_id`
+                    JOIN `variant` ON `variant`.`variant_id` = `card`.`variant_id`";
             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
-            echo '<table>';
-                echo '<th>';
-                    echo 'Card ID';
-                echo '</th>';
-                echo '<th>';
-                    echo 'Condition';
-                echo '</th>';
-                echo '<th>';
-                    echo 'Puchase Price';
-                echo '</th>';
-                echo '<th>';
-                    echo 'Purchase Date';
-                echo '</th>';
+            $invTable .= '<table>' .
+                '<th>' .
+                    'Card' .
+                '</th>' .
+                '<th>' .
+                    'Current Market Price' .
+                '</th>' .
+                '<th>' .
+                    'Puchase Price' .
+                '</th>' .
+                '<th>' .
+                    'Purchase Date' .
+                '</th>' .
+                '<th>' .
+                    'Condition' .
+                '</th>' .
+                '<th>' .
+                    'Current Gain' .
+                '</th>';
             while($row = mysqli_fetch_array($result)){
-                echo '<tr>';
+                $invTable .= '<tr>' .
                     //Card ID
-                    echo '<td>';
-                        echo $row['card_id'];
-                    echo '</td>';
-                    //Condition
-                    echo '<td>';
-                        echo $row['condition'];
-                    echo '</td>';
+                    '<td>' .
+                        'Name: ' . $row['card_name'] . '<br/>' .
+                        'Variant: ' . $row['variant_name'] . '<br/>' .
+                        'Set: ' . $row['set_name'] . '<br/>' .
+                        'Set Num: ' . $row['set_num'] . '<br/>' .
+                    '</td>' .
+                    //Current Market Price
+                    '<td>' .
+                        '$' . $row['market_price'] .
+                    '</td>' .
                     //Purchase Price
-                    echo '<td>';
-                        echo $row['purchase_price'];
-                    echo '</td>';
+                    '<td>' .
+                        '$' . $row['purchase_price'] .
+                    '</td>' .
                     //Purchase Date
-                    echo '<td>';
-                        echo $row['purchase_date'];
-                    echo '</td>';
-                echo '</tr>';
+                    '<td>' .
+                        $row['purchase_date'] .
+                    '</td>' .
+                    //Condition
+                    '<td>' .
+                        $row['condition'] .
+                    '</td>' .
+                    //Current Gain
+                    '<td>';
+                        $totalGain += $row['market_price'] - $row['purchase_price'];
+                        $invTable .= '$' . $row['market_price'] - $row['purchase_price'] .
+                    '</td>' .
+                '</tr>';
             }
-            echo '</table>';
+            $invTable .= '</table>';
+
+            echo '$' . number_format($totalGain, 2);
+            echo $invTable;
         ?>
     </body>
 </html>
