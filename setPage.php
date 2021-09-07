@@ -31,15 +31,6 @@
                     'Average Price' .
                 '</th>' .
                 '<th>' .
-                    'Price Purchased' .
-                '</th>' .
-                '<th>' .
-                    'Date Purchased' .
-                '</th>' .
-                '<th>' .
-                    'Condition' .
-                '</th>' .
-                '<th>' .
                     '# in Inventory' .
                 '</th>';
             while($variant = mysqli_fetch_array($variant_result)){
@@ -78,32 +69,9 @@
                     else
                         $cardTable .= '<text id="AV_' . $variant['card_id'] . '">-</text>'; 
                 $cardTable .= '</td>' .
-                //Price Purchased
-                '<td id="Price Purchased">' .
-                    '<input id="PP_' . $variant['card_id'] . '" type="number" min="0" step="0.01" placeholder = "$0.00"/>' .
-                    '<button title="Calculates price based off potential pulls" type="button">From Pack</button>' .
-                '</td>' .
-                //Date Purchased
-                '<td id="Date Purchased">' .
-                    '<input id="DP_' . $variant['card_id'] . '" type="date"></input>' .
-                '</td>' .
-                //Condition
-                '<td id="Date Purchased">' .
-                    '<select id="CND_' . $variant['card_id'] . '">' .
-                        '<option value="Near Mint">NM</option>' .
-                        '<option value="Light Played">LP</option>' .
-                        '<option value="Medium Played">MP</option>' .
-                        '<option value="Heavy Played">HP</option>' .
-                        '<option value="Damaged">DMG</option>' .
-                    '</select>' .
-                '</td>' .
                 //# in Inventory
                 '<td id="Number in Inventory">' .
                     '<text id="INV_' . $variant['card_id'] . '">0</text>' .
-                '</td>' .
-                //Submit Button
-                '<td>' .
-                    '<button type="submit" onclick="addToInventory(' . $variant['card_id'] . ')">Add to Inventory</button>' .
                 '</td>' .
             '</tr>';
             }
