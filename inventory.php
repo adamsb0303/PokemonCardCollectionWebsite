@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="CSS/inventory.css">
         <title>Inventory</title>
     </head>
     <body>
@@ -61,7 +62,16 @@
             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
             $invTable .= '<table>' .
                 '<th>' .
-                    'Card' .
+                    'Card Name' .
+                '</th>' .
+                '<th>' .
+                    'Variant' .
+                '</th>' .
+                '<th>' .
+                    'Set' .
+                '</th>' .
+                '<th>' .
+                    'Set #' .
                 '</th>' .
                 '<th>' .
                     'Current Market Price' .
@@ -80,12 +90,21 @@
                 '</th>';
             while($row = mysqli_fetch_array($result)){
                 $invTable .= '<tr>' .
-                    //Card ID
+                    //Card Name
                     '<td>' .
-                        'Name: ' . $row['card_name'] . '<br/>' .
-                        'Variant: ' . $row['variant_name'] . '<br/>' .
-                        'Set: ' . $row['set_name'] . '<br/>' .
-                        'Set Num: ' . $row['set_num'] . '<br/>' .
+                        $row['card_name'] .
+                    '</td>' .
+                    //Card Variant
+                    '<td>' .
+                        $row['variant_name'] .
+                    '</td>' .
+                    //Set
+                    '<td>' .
+                        $row['set_name'] .
+                    '</td>' .
+                    //Set Num
+                    '<td>' .
+                        $row['set_num'] .
                     '</td>' .
                     //Current Market Price
                     '<td>' .

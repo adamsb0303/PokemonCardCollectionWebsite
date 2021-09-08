@@ -1,0 +1,14 @@
+table{
+    border: 1px solid grey;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, tr{
+    border-top: 1px solid grey;
+    border-right: 1px solid grey;
+}
+
+td:nth-child(n + 4){
+    text-align: center;
+}
