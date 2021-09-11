@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="CSS/setPage.css">
+        <script src="JavaScript/setPage.js"></script>
         <?php
             $name = $_GET['set'];
             echo '<title>' . $name . '</title>';
@@ -31,7 +32,7 @@
                     'Average Price' .
                 '</th>' .
                 '<th>' .
-                    '# in Inventory' .
+                    'Own?' .
                 '</th>';
             while($variant = mysqli_fetch_array($variant_result)){
                 $cardAmount++;
@@ -71,7 +72,7 @@
                 $cardTable .= '</td>' .
                 //# in Inventory
                 '<td id="Number in Inventory">' .
-                    '<text id="INV_' . $variant['card_id'] . '">0</text>' .
+                    '<input type="checkbox" onclick="hidePrice(' . $variant['card_id'] . ',' . $variant['variant_id'] . ')" id="INV_' . $variant['card_id']. '">' .
                 '</td>' .
             '</tr>';
             }
@@ -83,11 +84,15 @@
                 $row = mysqli_fetch_array($result);
                 echo '<img src="Images/Logos/' . $row['set_name'] . '.png" alt="' . $row['set_name'] . ' Set Symbol" style="width:25vw; height:auto;">' . '<br />';
                 echo $name . '<br />';
-                echo "Set Size: " . $row['set_size'] . '<br />';
-                echo "Set Market Price: $" . number_format($row['set_price'], 2) . '<br />';
-                echo "Master Set Size: " . $cardAmount . '<br />';
-                echo "Master Set Market Price: $" . number_format($row['Mset_price'], 2) . '<br />';
-                echo "Progress: ";
+                echo 'Set Size: ' . $row['set_size'] . '<br/>';
+                echo 'Set Price: $' . number_format($row['set_price'], 2) . '<br />';
+                echo 'Master Set Size: ' . $cardAmount . '<br/>';
+                echo 'Master Set Price: $' . number_format($row['Mset_price'], 2) . '<br />';
+                echo '<br/>';
+                echo 'Set Remainder: <text id="size">' . $row['set_size'] . '</text><br />';
+                echo 'Set Market Price: $<text id="setPrice">' . number_format($row['set_price'], 2) . '</text><br />';
+                echo 'Master Set Remainder: <text id="mSize">' . $cardAmount . '</text><br />';
+                echo 'Master Set Market Price: $<text id="mSetPrice">' . number_format($row['Mset_price'], 2) . '</text><br />';
             echo '</div><br/>';
 
             echo $cardTable;

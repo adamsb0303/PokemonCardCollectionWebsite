@@ -5,6 +5,11 @@ table{
     border: 1px solid black;
 }
 
+th {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
 td {
     text-align: center;
     border-left: 1px solid black;
