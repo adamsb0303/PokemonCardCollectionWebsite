@@ -1,7 +1,6 @@
 <?php
     //300 requests per minute max
     //expires 9/5
-    include "connect.php";
     include_once "bearer_token.php";
     set_time_limit(60000);
 
