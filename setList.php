@@ -23,7 +23,20 @@
 
             $generationIndex = 0;
             $tableOfContents .= '<table>';
-            while($row = mysqli_fetch_array($result)){
+            while($row = mysqli_fetch_array($result)){ 
+                $setID = $row['set_id'];
+                $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
+                        JOIN `card` ON card.card_id = collection.card_id
+                        WHERE `set_id` = $setID AND `variant_id` = 1";
+                $setResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+                $setOwned = mysqli_fetch_array($setResult);
+                
+                $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
+                        JOIN `card` ON card.card_id = collection.card_id
+                        WHERE `set_id` = $setID";
+                $setResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+                $mSetOwned = mysqli_fetch_array($setResult);
+                
                 if($row['generation'] > $generationIndex){
                     $generationIndex++;
                     $tableOfContents .= '<td>Generation ' . $generationIndex . '<br/>';
@@ -38,9 +51,11 @@
                     '</td>' .
                     '<td class="setProgress">' .
                         'Size: ' . 
+                        $setOwned[0] . '/' .
                         $row['set_size'] .
                         '<br/>' .
                         'Msize: ' . 
+                        $mSetOwned[0] . '/' .
                         $row['Mset_size'] .
                         '<br/>' .
                         '<label for="master">Master: </label>' .
