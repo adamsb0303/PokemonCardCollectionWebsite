@@ -45,29 +45,37 @@
                 $tableOfContents .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#' . $row['set_name'] . '">' . $row['set_name'] . '</a><br/>';
 
                 $setListTable .= '<tr id="' . $row['set_name'] . '">' .
-                    '<td>' .
+                    '<td rowspan=2>' .
                         '<a href="setPage.php?set=' . $row['set_name'] . '">' . $row['set_name'] . '</a>' .
                         '<image src="Images/Symbols/' . $row['set_name'] . '.png" class="setImage"></image>' .
                     '</td>' .
-                    '<td class="setProgress">' .
-                        'Msize: ' . 
-                        $mSetOwned[0] . '/' .
-                        $row['Mset_size'] .
-                        ' ' . round(($mSetOwned[0] / $row['Mset_size']) * 100, 2) . '%' .
-                        '<br/>' .
-                        'Size: ' . 
+                    '<td style="white-space:nowrap;">' .
+                        'Set Size: ' . 
                         $setOwned[0] . '/' .
                         $row['set_size'] .
-                        ' ' . round(($setOwned[0] / $row['set_size']) * 100, 2) . ' %' .
                         '<br/>' .
-                        '<label for="master">Master: </label>' .
-                        '<progress id="master" value=' . ($mSetOwned[0] / $row['Mset_size']) * 100 . ' max=100></progress>' .
-                        '<text> $' . number_format($row['Mset_price'],2) . '</text>' .
+                        '$' . number_format($row['set_price'],2) .
+                    '</td>' . 
+                    '<td style="text-align: right; border-right-style: hidden;">' . 
+                        round(($setOwned[0] / $row['set_size']) * 100, 2) . '% ' .
+                    '</td>' .
+                    '<td style="padding:5px; width:100%;">' .
+                        '<progress style="width:100%" value=' . ($setOwned[0] / $row['set_size']) * 100 . ' max=100></progress>' .
+                    '</td>' . 
+                '</tr>' .
+                '<tr>' .
+                    '<td style="white-space:nowrap;">' .
+                        'Master Set Size: ' . 
+                        $mSetOwned[0] . '/' .
+                        $row['Mset_size'] .
                         '<br/>' .
-                        '<br/>' .
-                        '<label for="set">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set: </label>' .
-                        '<progress id="set" value=' . ($setOwned[0] / $row['set_size']) * 100 . ' max=100></progress>' .
-                        '<text> $' . number_format($row['set_price'],2) . '</text>' .
+                        '$' . number_format($row['Mset_price'],2) .
+                    '</td>' .
+                    '<td style="text-align: right; border-right-style: hidden;">' . 
+                        round(($mSetOwned[0] / $row['Mset_size']) * 100, 2) . '% ' .
+                    '</td>' .
+                    '<td style="padding:5px; width:100%;">' .
+                        '<progress style="width:100%" value=' . ($mSetOwned[0] / $row['Mset_size']) * 100 . ' max=100></progress>' .
                     '</td>' .
                 '</tr>';
             }
