@@ -50,21 +50,23 @@
                         '<image src="Images/Symbols/' . $row['set_name'] . '.png" class="setImage"></image>' .
                     '</td>' .
                     '<td class="setProgress">' .
-                        'Size: ' . 
-                        $setOwned[0] . '/' .
-                        $row['set_size'] .
-                        '<br/>' .
                         'Msize: ' . 
                         $mSetOwned[0] . '/' .
                         $row['Mset_size'] .
+                        ' ' . round(($mSetOwned[0] / $row['Mset_size']) * 100, 2) . '%' .
+                        '<br/>' .
+                        'Size: ' . 
+                        $setOwned[0] . '/' .
+                        $row['set_size'] .
+                        ' ' . round(($setOwned[0] / $row['set_size']) * 100, 2) . ' %' .
                         '<br/>' .
                         '<label for="master">Master: </label>' .
-                        '<progress id="master" value=80 max=100></progress>' .
+                        '<progress id="master" value=' . ($mSetOwned[0] / $row['Mset_size']) * 100 . ' max=100></progress>' .
                         '<text> $' . number_format($row['Mset_price'],2) . '</text>' .
                         '<br/>' .
                         '<br/>' .
                         '<label for="set">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set: </label>' .
-                        '<progress id="set" value=80 max=100></progress>' .
+                        '<progress id="set" value=' . ($setOwned[0] / $row['set_size']) * 100 . ' max=100></progress>' .
                         '<text> $' . number_format($row['set_price'],2) . '</text>' .
                     '</td>' .
                 '</tr>';
