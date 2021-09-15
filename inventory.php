@@ -22,11 +22,13 @@
                 $sql = "INSERT INTO `collection` (`user_id`, `card_id`, `condition`, `purchase_price`, `purchase_date`) VALUES ($userID, $cardID, '$condition', $purchasePrice, '$purchaseDate');";
                 mysqli_query($link, $sql) or die(mysqli_error($link));
             }
+
+            $cardIDQString = $_GET['id'];
             
             echo '<form method="post">' .
                 //Card ID
                 '<text>Card ID: </text>' .
-                '<input name="cardID"/>' .
+                '<input name="cardID" value="' . $cardIDQString . '"/>' .
                 '<br/>' .
                 //Price Purchased
                 '<text>Price Purchased: </text>' .

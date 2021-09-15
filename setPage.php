@@ -72,7 +72,8 @@
                 $cardTable .= '</td>' .
                 //# in Inventory
                 '<td id="Number in Inventory">' .
-                    '<input type="checkbox" onclick="hidePrice(' . $variant['card_id'] . ',' . $variant['variant_id'] . ')" id="INV_' . $variant['card_id']. '">' .
+                    '<button onclick="window.open(\'inventory.php?id=' . $variant['card_id'] . '\')">Enter</button>' .
+                    //'<input type="checkbox" onclick="hidePrice(' . $variant['card_id'] . ',' . $variant['variant_id'] . ')" id="INV_' . $variant['card_id']. '">' .
                 '</td>' .
             '</tr>';
             }
