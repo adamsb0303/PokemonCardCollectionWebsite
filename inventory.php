@@ -13,17 +13,35 @@
         <?php
             include_once 'php/connect.php';
             if(isset($_POST['submit'])){
-                $userID = 1;
-                $cardID = $_POST['cardID'];
-                $condition = $_POST['condition'];
-                $purchasePrice = $_POST['price'];
-                $purchaseDate = $_POST['date'];
-                
-                $sql = "INSERT INTO `collection` (`user_id`, `card_id`, `condition`, `purchase_price`, `purchase_date`) VALUES ($userID, $cardID, '$condition', $purchasePrice, '$purchaseDate');";
+                $formValues = array(1, $_POST['cardID']);
+                //$userID = 1;
+                //$cardID = $_POST['cardID'];
+                $condition =  NULL;
+                $purchasePrice = NULL;
+                $purchaseDate = NULL;
+
+                $queryValues = "`user_id`, `card_id`";
+
+                if($_POST['condition'] != ''){
+                    $queryValues .= ', `condition`';
+                    array_push($formValues, '\'' . $_POST['condition'] . '\'');
+                }
+                if($_POST['price'] != ''){
+                    $queryValues .= ', `purchase_price`';
+                    array_push($formValues, $_POST['price']);
+                }
+                if($_POST['date'] != ''){
+                    $queryValues .= ', `purchase_date`';
+                    array_push($formValues, '\'' . $_POST['date'] . '\'');
+                }
+
+                $sql = "INSERT INTO `collection` ($queryValues) VALUES (" . implode(", ", $formValues) . ");";
                 mysqli_query($link, $sql) or die(mysqli_error($link));
             }
 
-            $cardIDQString = $_GET['id'];
+            $cardIDQString = "";
+            if(!empty($_GET['id']))
+                $cardIDQString = $_GET['id'];
             
             echo '<form method="post">' .
                 //Card ID
@@ -42,6 +60,7 @@
                 //Condition
                 '<text>Condition: </text>' .
                 '<select name="condition">' .
+                        '<option></option>' .
                         '<option value="NM">NM</option>' .
                         '<option value="LP">LP</option>' .
                         '<option value="MP">MP</option>' .
@@ -60,7 +79,8 @@
             $sql = "SELECT * FROM `collection`
                     JOIN `card` ON `collection`.`card_id` = `card`.`card_id`
                     JOIN `set` ON `card`.`set_id` = `set`.`set_id`
-                    JOIN `variant` ON `variant`.`variant_id` = `card`.`variant_id`";
+                    JOIN `variant` ON `variant`.`variant_id` = `card`.`variant_id`
+                    ORDER BY `purchase_id` DESC";
             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
             $invTable .= '<table>' .
                 '<th>' .
@@ -113,21 +133,35 @@
                         '$' . $row['market_price'] .
                     '</td>' .
                     //Purchase Price
-                    '<td>' .
-                        '$' . $row['purchase_price'] .
-                    '</td>' .
+                    '<td>';
+                        if($row['purchase_price'] != '')
+                            $invTable .= '$' . $row['purchase_price'];
+                        else
+                            $invTable .= '-';
+                    $invTable .= '</td>' .
                     //Purchase Date
-                    '<td>' .
-                        $row['purchase_date'] .
+                    '<td>';
+                        if($row['purchase_date'] != '')
+                            $invTable .= $row['purchase_date'];
+                        else
+                            $invTable .= '-';
+                    $invTable .= '</td>' .
                     '</td>' .
                     //Condition
-                    '<td>' .
-                        $row['condition'] .
+                    '<td>';
+                        if($row['condition'] != '')
+                            $invTable .= $row['condition'];
+                        else
+                            $invTable .= '-';
+                    $invTable .= '</td>' .
                     '</td>' .
                     //Current Gain
                     '<td>';
-                        $totalGain += $row['market_price'] - $row['purchase_price'];
-                        $invTable .= '$' . $row['market_price'] - $row['purchase_price'] .
+                        if($row['purchase_price'] != ""){
+                            $totalGain += $row['market_price'] - $row['purchase_price'];
+                            $invTable .= '$' . $row['market_price'] - $row['purchase_price'];
+                        }else
+                            $invTable .= '-';
                     '</td>' .
                 '</tr>';
             }
