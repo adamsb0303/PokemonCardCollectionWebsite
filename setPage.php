@@ -79,6 +79,32 @@
             }
             $cardTable .= '</table>';
 
+            $sql = "SELECT SUM(`market_price`) FROM `collection`
+                    JOIN `card` ON collection.card_id = card.card_id
+                    WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')
+                    AND `variant_id` = 1";
+            $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+            $sumMarketPrice = mysqli_fetch_array($userInfoResult);
+
+            $sql = "SELECT SUM(`market_price`) FROM `collection`
+                    JOIN `card` ON collection.card_id = card.card_id
+                    WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')";
+            $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+            $mSumMarketPrice = mysqli_fetch_array($userInfoResult);
+
+            $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
+                    JOIN `card` ON collection.card_id = card.card_id
+                    WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')
+                    AND `variant_id` = 1";
+            $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+            $cardsOwned = mysqli_fetch_array($userInfoResult);
+
+            $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
+                    JOIN `card` ON collection.card_id = card.card_id
+                    WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')";
+            $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+            $mCardsOwned = mysqli_fetch_array($userInfoResult);
+
             echo '<div class="header">';
                 $sql = "SELECT * FROM `set` WHERE set_name = '$name'";
                 $result = mysqli_query($link, $sql) or die(mysqli_error($link));
@@ -90,10 +116,10 @@
                 echo 'Master Set Size: ' . $cardAmount . '<br/>';
                 echo 'Master Set Price: $' . number_format($row['Mset_price'], 2) . '<br />';
                 echo '<br/>';
-                echo 'Set Remainder: <text id="size">' . $row['set_size'] . '</text><br />';
-                echo 'Set Market Price: $<text id="setPrice">' . number_format($row['set_price'], 2) . '</text><br />';
-                echo 'Master Set Remainder: <text id="mSize">' . $cardAmount . '</text><br />';
-                echo 'Master Set Market Price: $<text id="mSetPrice">' . number_format($row['Mset_price'], 2) . '</text><br />';
+                echo 'Set Remainder: <text id="size">' . $row['set_size'] - $cardsOwned[0] . '</text><br />';
+                echo 'Set Market Price: $<text id="setPrice">' . number_format($row['set_price'] - $sumMarketPrice[0], 2) . '</text><br />';
+                echo 'Master Set Remainder: <text id="mSize">' . $cardAmount - $mCardsOwned[0] . '</text><br />';
+                echo 'Master Set Market Price: $<text id="mSetPrice">' . number_format($row['Mset_price'] - $mSumMarketPrice[0], 2) . '</text><br />';
             echo '</div><br/>';
 
             echo $cardTable;
