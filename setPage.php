@@ -30,9 +30,6 @@
                 '</th>' .
                 '<th>' .
                     'Average Price' .
-                '</th>' .
-                '<th>' .
-                    'Own?' .
                 '</th>';
             while($variant = mysqli_fetch_array($variant_result)){
                 $cardAmount++;
@@ -70,11 +67,6 @@
                     else
                         $cardTable .= '<text id="AV_' . $variant['card_id'] . '">-</text>'; 
                 $cardTable .= '</td>' .
-                //# in Inventory
-                '<td id="Number in Inventory">' .
-                    '<button onclick="window.open(\'inventory.php?id=' . $variant['card_id'] . '\')">Enter</button>' .
-                    //'<input type="checkbox" onclick="hidePrice(' . $variant['card_id'] . ',' . $variant['variant_id'] . ')" id="INV_' . $variant['card_id']. '">' .
-                '</td>' .
             '</tr>';
             }
             $cardTable .= '</table>';
