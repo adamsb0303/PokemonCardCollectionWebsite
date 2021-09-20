@@ -42,7 +42,7 @@
                     $tableOfContents .= '<td>Generation ' . $generationIndex . '<br/>';
                 }
                 
-                $tableOfContents .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#' . $row['set_name'] . '">' . $row['set_name'] . '</a><br/>';
+                $tableOfContents .= '<a href="#' . $row['set_name'] . '">' . $row['set_name'] . '</a><br/>';
 
                 $setListTable .= '<tr id="' . $row['set_name'] . '">' .
                     '<td rowspan=2>' .
