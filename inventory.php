@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="CSS/inventory.css">
+        <script src="JavaScript/inventory.js"></script>
         <title>Inventory</title>
     </head>
     <body>
@@ -39,14 +40,37 @@
                 mysqli_query($link, $sql) or die(mysqli_error($link));
             }
 
-            $cardIDQString = "";
-            if(!empty($_GET['id']))
-                $cardIDQString = $_GET['id'];
+            $setIDQString = "";
+            if(!empty($_GET['set']))
+                $setIDQString = $_GET['set'];
             
             echo '<form method="post">' .
                 //Card ID
-                '<text>Card ID: </text>' .
-                '<input name="cardID" value="' . $cardIDQString . '"/>' .
+                '<text>Card Selection: </text><br/>' .
+                '<text>Set: </text>' . 
+                '<select id="setSelect" onChange=\'updateCardDrop()\'>';
+                    $sql = "SELECT * FROM `set`";
+                    $result = mysqli_query($link, $sql) or die(mysqli_error($link));
+                    while($row = mysqli_fetch_array($result)){
+                        echo '<option value="' . $row['set_id'] . '" ';
+                        if($setIDQString != NULL && $setIDQString == $row['set_id'])
+                            echo 'selected';
+                        echo '>' . $row['set_name'] . '</option>';
+                    }
+                echo '</select>' .
+                '<br/>' . 
+                '<text>Card: </text>' .
+                '<select name=\'cardID\'>';
+                if($setIDQString != NULL){
+                    $sql = "SELECT * FROM `card`
+                            JOIN `variant` ON card.variant_id = variant.variant_id
+                            WHERE `set_id` = $setIDQString";
+                    $result = mysqli_query($link, $sql) or die(mysqli_error($link));
+                    while($row = mysqli_fetch_array($result)){
+                        echo '<option value="' . $row['card_id'] . '">' . $row['set_num'] . ") " . $row['card_name'] . ' - ' . $row['variant_name'] . '</option>';
+                    }
+                }
+                echo '</select>' .
                 '<br/>' .
                 //Price Purchased
                 '<text>Price Purchased: </text>' .
