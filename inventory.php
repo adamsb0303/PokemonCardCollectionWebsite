@@ -48,10 +48,14 @@
                 //Card ID
                 '<text>Card Selection: </text><br/>' .
                 '<text>Set: </text>' . 
-                '<select id="setSelect" onChange=\'updateCardDrop()\'>';
+                '<select id="setSelect" onChange=\'updateCardDrop()\'>' .
+                    '<option disabled selected value> -- select a set -- </option>';
                     $sql = "SELECT * FROM `set`";
                     $result = mysqli_query($link, $sql) or die(mysqli_error($link));
+                    $currentGen = 0;
                     while($row = mysqli_fetch_array($result)){
+                        if($row['generation'] > $currentGen)
+                            echo '<option style="background-color: #e5e5e5; color: #000; font-weight:bold;" disabled>-- Generation ' . ++$currentGen . ' --</option>';
                         echo '<option value="' . $row['set_id'] . '" ';
                         if($setIDQString != NULL && $setIDQString == $row['set_id'])
                             echo 'selected';
@@ -104,7 +108,7 @@
                     JOIN `card` ON `collection`.`card_id` = `card`.`card_id`
                     JOIN `set` ON `card`.`set_id` = `set`.`set_id`
                     JOIN `variant` ON `variant`.`variant_id` = `card`.`variant_id`
-                    ORDER BY `purchase_id` DESC";
+                    ORDER BY `card`.`set_id`, `card`.`card_id`";
             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
             $invTable .= '<table>' .
                 '<th>' .
