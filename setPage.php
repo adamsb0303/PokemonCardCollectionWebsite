@@ -30,6 +30,9 @@
                 '</th>' .
                 '<th>' .
                     'Average Price' .
+                '</th>' .
+                '<th>' .
+                    'Owned' .
                 '</th>';
             while($variant = mysqli_fetch_array($variant_result)){
                 $cardAmount++;
@@ -66,6 +69,18 @@
                         $cardTable .= '<text id="AV_' . $variant['card_id'] . '">$' . $variant['average_price'] . '</text>';
                     else
                         $cardTable .= '<text id="AV_' . $variant['card_id'] . '">-</text>'; 
+                $cardTable .= '</td>' .
+                //Owned
+                '<td>';
+                    $cardID = $variant['card_id'];
+                    $sql = "SELECT * FROM `collection`
+                            WHERE `card_id` = $cardID";
+                    $collectionCheckResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+                    $collectionCheck = mysqli_fetch_array($collectionCheckResult);
+                    if($collectionCheck == NULL)
+                        $cardTable .= '<text style="color:red">X</text>';
+                    else
+                        $cardTable .= '<text style="color:green">✓</text>';
                 $cardTable .= '</td>' .
             '</tr>';
             }
