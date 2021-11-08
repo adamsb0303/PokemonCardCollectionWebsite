@@ -16,15 +16,44 @@
             $tableOfContents = "";
 
             $setListTable .= '<table>' .
-                '<th>' .
-                    'Name' .
-                '</th>' .
-                '<th>' .
-                    'Progress' .
-                '</th>';
+                '<thead>' .
+                    '<tr>' .
+                        '<th>' . 
+
+                        '</th>' .
+                        '<th>' . 
+
+                        '</th>' .
+                        '<th colspan="2">' . 
+                            'Master' .
+                        '</th>' .
+                        '<th colspan="2">' . 
+                            'Set' .
+                        '</th>' .
+                    '</tr>' .
+                    '<tr>' .
+                        '<th>' . 
+
+                        '</th>' .
+                        '<th>' .
+                            'Name' .
+                        '</th>' .
+                        '<th>' .
+                            'Price' .
+                        '</th>' .
+                        '<th>' .
+                            'Progress' .
+                        '</th>' .
+                        '<th>' .
+                            'Price' .
+                        '</th>' .
+                        '<th>' .
+                            'Progress' .
+                        '</th>' . 
+                    '</tr>' .
+                '</thead>';
 
             $generationIndex = 0;
-            $tableOfContents .= '<table>';
             while($row = mysqli_fetch_array($result)){ 
                 $setID = $row['set_id'];
                 $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
@@ -38,56 +67,42 @@
                         WHERE `set_id` = $setID";
                 $setResult = mysqli_query($link, $sql) or die(mysqli_error($link));
                 $mSetOwned = mysqli_fetch_array($setResult);
-                
-                if($row['generation'] > $generationIndex){
-                    $generationIndex++;
-                    $tableOfContents .= '<td>Generation ' . $generationIndex . '<br/>';
-                }
-                
-                $tableOfContents .= '<a href="#' . $row['set_name'] . '">' . $row['set_name'] . '</a><br/>';
 
                 $setListTable .= '<tr id="' . $row['set_name'] . '">' .
-                    '<td rowspan=2>' .
-                        '<a href="setPage.php?set=' . $row['set_name'] . '">' . $row['set_name'] . '</a>' .
+                    //Name
+                    '<td style="vertical-align:middle">' .
                         '<image src="Images/Symbols/' . $row['set_name'] . '.png" class="setImage"></image>' .
                     '</td>' .
-                    '<td style="white-space:nowrap;">' .
-                        'Set Size: ' . 
-                        $setOwned[0] . '/' .
-                        $row['set_size'] .
-                        '<br/>' .
-                        '$' . number_format($row['set_price'],2) .
-                    '</td>' . 
-                    '<td style="text-align: right; border-right-style: hidden;">' . 
-                        round(($setOwned[0] / $row['set_size']) * 100, 2) . '% ' .
+                    '<td style="text-align:left;">' .
+                        '<a href="setPage.php?set=' . $row['set_name'] . '">' . $row['set_name'] . '</a>' .
                     '</td>' .
-                    '<td style="padding:5px; width:100%;">' .
-                        '<progress style="width:100%" value=' . ($setOwned[0] / $row['set_size']) * 100 . ' max=100></progress>' .
-                    '</td>' . 
-                '</tr>' .
-                '<tr>' .
-                    '<td style="white-space:nowrap;">' .
-                        'Master Set Size: ' . 
-                        $mSetOwned[0] . '/' .
-                        $row['Mset_size'] .
-                        '<br/>' .
+                    //M set price
+                    '<td>' .
                         '$' . number_format($row['Mset_price'],2) .
+                    '</td>' . 
+                    //m set completion
+                    '<td>' .
+                        $setOwned[0] . '/' .
+                        $row['Mset_size'] .
                     '</td>' .
-                    '<td style="text-align: right; border-right-style: hidden;">' . 
-                        round(($mSetOwned[0] / $row['Mset_size']) * 100, 2) . '% ' .
+                    //set price
+                    '<td>' .
+                        '$' . number_format($row['set_price'],2) .
                     '</td>' .
-                    '<td style="padding:5px; width:100%;">' .
-                        '<progress style="width:100%" value=' . ($mSetOwned[0] / $row['Mset_size']) * 100 . ' max=100></progress>' .
+                    //set completion
+                    '<td>' . 
+                        $mSetOwned[0] . '/' .
+                        $row['set_size'] .
                     '</td>' .
                 '</tr>';
             }
             $setListTable .= '</table>';
-            $tableOfContents .= '</table>';
 
-            echo $tableOfContents;
+            echo '<div>';
             echo $setListTable;
+            echo '</div>';
         ?>
-        <p>
+        <p style="text-align:center;">
             This product uses TCGplayer data but is not endorsed or certified by TCGplayer.
         </p>
     </body>
