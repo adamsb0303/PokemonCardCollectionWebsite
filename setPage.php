@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="CSS/setPage.css">
+        <link rel="stylesheet" href="CSS/index.css">
         <script src="JavaScript/setPage.js"></script>
         <?php
             $name = $_GET['set'];
@@ -10,8 +11,10 @@
     </head>
     <body>
         <?php
+            include 'php/header.php';
             include_once 'php/connect.php';
-            $sql = "SELECT * FROM `card` INNER JOIN `variant` ON card.variant_id = variant.variant_id
+            $sql = "SELECT * FROM `card` JOIN `variant` ON card.variant_id = variant.variant_id
+                    JOIN `rarities` ON card.rarity_id = rarities.rarity_id
                     WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')";
 
             $variant_result = mysqli_query($link, $sql) or die(mysqli_error($link));

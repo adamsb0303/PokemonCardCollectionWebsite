@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="CSS/inventory.css">
+        <link rel="stylesheet" href="CSS/index.css">
         <script src="JavaScript/inventory.js"></script>
         <title>Inventory</title>
     </head>
@@ -12,6 +13,7 @@
             }
         </script>
         <?php
+            include 'php/header.php';
             include_once 'php/connect.php';
             if(isset($_POST['submit'])){
                 $formValues = array(1, $_POST['cardID']);

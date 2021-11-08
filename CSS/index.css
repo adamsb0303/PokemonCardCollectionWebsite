@@ -1,0 +1,40 @@
+*{
+    padding: 0;
+    margin: 0;
+    border: 0;
+    outline: 0;
+}
+
+.navContainer{
+    align-content: center;
+    display: flex;
+    justify-content: space-between;
+
+    padding-right: 1rem;
+    padding-left: 1rem;
+    max-width:1200px;
+}
+
+.navItem{
+    padding: 0 1rem;
+    margin: 0 0.7rem;
+    font-size: 1rem;
+    line-height: 3rem;
+    color: #f0ecff;
+    text-decoration: none;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.navMenu{
+    padding: 5px 0px;
+    background-color: rgb(18, 18, 61);
+    position: relative;
+    z-index: 100;
+}
+
+.siteLinks{
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}

@@ -2,10 +2,12 @@
 <html>
     <head>
         <link rel="stylesheet" href="CSS/setList.css">
+        <link rel="stylesheet" href="CSS/index.css">
         <title>Card Sets</title>
     </head>
     <body>
         <?php
+            include 'php/header.php';
             include_once 'php/connect.php';
             $sql = "SELECT * FROM `set`";
             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
