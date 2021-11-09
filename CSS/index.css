@@ -5,8 +5,18 @@
     outline: 0;
 }
 
+table{
+    border-collapse: collapse;
+}
+
+td {
+    text-align: center;
+    border-bottom: 1px solid grey;
+    padding: 8px;
+}
+
 /*Header*/
-.navContainer{
+.root{
     align-content: center;
     display: flex;
     justify-content: space-between;

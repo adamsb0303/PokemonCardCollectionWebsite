@@ -1,5 +1,5 @@
 <div class="navMenu">
-    <div class="navContainer">
+    <div class="root">
         <div class="siteLinks">
             <nav>
                 <a class="navItem" href="./index.php">Home</a>
