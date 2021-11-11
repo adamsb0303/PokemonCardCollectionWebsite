@@ -1,8 +1,20 @@
+<?php
+    function updateQString($orderByParam, $pageNum){
+        $qString = "";
+        //Sort Order
+        $qString .= "order=" . $orderByParam . "&";
+        //Page Num
+        $qString .= "page=" . $pageNum;
+
+        return $qString;
+    }
+?>
+
 <html>
     <head>
         <link rel="stylesheet" href="CSS/index.css">
         <script src="JavaScript/cards.js"></script>
-        <title>Inventory</title>
+        <title>Cards</title>
     </head>
     <body>
         <?php
@@ -36,9 +48,10 @@
                             
                             //select order
                             $sortCategory = substr($orderByParam,0,3);
-                            $sortDirection = substr($orderByParam, 3);
+                            $sortNum = substr($orderByParam, 3);
 
-                            $sortDirection = ($sortDirection == 1) ? "ASC" : "DESC";
+                            $sortDirection = ($sortNum == 1) ? "ASC" : "DESC";
+                            $sortNum = ($sortNum == 1) ? 1 : 2;
 
                             echo '<th style="width:5%;"></th>';
                             echo '<th style="width:10%;"></th>';
@@ -47,76 +60,76 @@
                                     $sql .= "ORDER BY `card_name` " . $sortDirection . " ";
                                     echo '<th>
                                             <div class="filteredCategory">
-                                                <text>Name</text>
+                                                <a href="cards.php?' . updateQString("NAM" . ($sortNum % 2) + 1, $pageNum) . '">Name</a>
                                                 <div class="' . $sortDirection . '"></div>
                                             </div>
                                         </th>';
-                                    echo '<th>Set</th>';
-                                    echo '<th>Num</th>';
-                                    echo '<th>Variant</th>';
-                                    echo '<th>Price</th>';
+                                    echo '<th><a href="cards.php?' . updateQString("SET1", $pageNum) . '">Set</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("NUM1", $pageNum) . '">Num</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("VAR1", $pageNum) . '">Variant</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("PRI1", $pageNum) . '">Price</a></th>';
                                     break;
                                 case "SET":
                                     $sql .= "ORDER BY `set_name` " . $sortDirection . " ";
-                                    echo '<th>Name</th>';
+                                    echo '<th><a href="cards.php?' . updateQString("NAM1", $pageNum) . '">Name</a></th>';
                                     echo '<th>
                                             <div class="filteredCategory">
-                                                <text>Set</text>
+                                                <a href="cards.php?' . updateQString("SET" . ($sortNum % 2) + 1, $pageNum) . '">Set</a>
                                                 <div class="' . $sortDirection . '"></div>
                                             </div>
                                         </th>';
-                                    echo '<th>Num</th>';
-                                    echo '<th>Variant</th>';
-                                    echo '<th>Price</th>';
+                                    echo '<th><a href="cards.php?' . updateQString("NUM1", $pageNum) . '">Num</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("VAR1", $pageNum) . '">Variant</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("PRI1", $pageNum) . '">Price</a></th>';
                                     break;
                                 case "NUM":
                                     $sql .= "ORDER BY `set_num` " . $sortDirection . " ";
-                                    echo '<th>Name</th>';
-                                    echo '<th>Set</th>';
+                                    echo '<th><a href="cards.php?' . updateQString("NAM1", $pageNum) . '">Name</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("SET1", $pageNum) . '">Set</a></th>';
                                     echo '<th>
                                             <div class="filteredCategory">
-                                                <text>Num</text>
+                                                <a href="cards.php?' . updateQString("NUM" . ($sortNum % 2) + 1, $pageNum) . '">Num</a>
                                                 <div class="' . $sortDirection . '"></div>
                                             </div>
                                         </th>';
-                                    echo '<th>Variant</th>';
-                                    echo '<th>Price</th>';
+                                    echo '<th><a href="cards.php?' . updateQString("VAR1", $pageNum) . '">Variant</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("PRI1", $pageNum) . '">Price</a></th>';
                                     break;
                                 case "VAR":
                                     $sql .= "ORDER BY `variant_name` " . $sortDirection . " ";
-                                    echo '<th>Name</th>';
-                                    echo '<th>Set</th>';
-                                    echo '<th>Num</th>';
+                                    echo '<th><a href="cards.php?' . updateQString("NAM1", $pageNum) . '">Name</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("SET1", $pageNum) . '">Set</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("NUM1", $pageNum) . '">Num</a></th>';
                                     echo '<th>
                                             <div class="filteredCategory">
-                                                <text>Variant</text>
+                                                <a href="cards.php?' . updateQString("VAR" . ($sortNum % 2) + 1, $pageNum) . '">Variant</a>
                                                 <div class="' . $sortDirection . '"></div>
                                             </div>
                                         </th>';
-                                    echo '<th>Price</th>';
+                                    echo '<th><a href="cards.php?' . updateQString("PRI1", $pageNum) . '">Price</a></th>';
                                     break;
                                 case "PRI":
                                     $sql .= "ORDER BY `market_price` " . $sortDirection . " ";
-                                    echo '<th>Name</th>';
-                                    echo '<th>Set</th>';
-                                    echo '<th>Num</th>';
-                                    echo '<th>Variant</th>';
+                                    echo '<th><a href="cards.php?' . updateQString("NAM1", $pageNum) . '">Name</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("SET1", $pageNum) . '">Set</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("NUM1", $pageNum) . '">Num</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("VAR1", $pageNum) . '">Variant</a></th>';
                                     echo '<th>
                                             <div class="filteredCategory">
-                                                <text>Price</text>
+                                                <a href="cards.php?' . updateQString("PRI" . ($sortNum % 2) + 1, $pageNum) . '">Price</a>
                                                 <div class="' . $sortDirection . '"></div>
                                             </div>
                                           </th>';
                                     break;
                                 default:
                                     $sql .= "ORDER BY `market_price` DESC ";
-                                    echo '<th>Name</th>';
-                                    echo '<th>Set</th>';
-                                    echo '<th>Num</th>';
-                                    echo '<th>Variant</th>';
+                                    echo '<th><a href="cards.php?' . updateQString("NAM1", $pageNum) . '">Name</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("SET1", $pageNum) . '">Set</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("NUM1", $pageNum) . '">Num</a></th>';
+                                    echo '<th><a href="cards.php?' . updateQString("VAR1", $pageNum) . '">Variant</a></th>';
                                     echo '<th>
                                             <div class="filteredCategory">
-                                                <text>Price</text>
+                                                <a href="cards.php?' . updateQString("PRI1", $pageNum) . '">Price</a>
                                                 <div class="DESC"></div>
                                             </div>
                                           </th>';
@@ -126,7 +139,6 @@
                     </thead>
                     <tbody>
                         <?php
-
                             //select page
                             $sql .= "LIMIT " . ($pageNum - 1) * 50 . ", " . 50;
 

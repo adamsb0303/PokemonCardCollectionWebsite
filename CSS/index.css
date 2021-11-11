@@ -15,8 +15,9 @@ td {
     padding: 8px;
 }
 
-th{
-    cursor: pointer;
+a {
+    text-decoration: none;
+    color: black;
 }
 
 .filteredCategory{
@@ -25,7 +26,7 @@ th{
     justify-content: center;
 }
 
-.filteredCategory > text {
+.filteredCategory > a {
     padding-right: 5px;
 }
 
