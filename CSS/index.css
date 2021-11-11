@@ -15,6 +15,36 @@ td {
     padding: 8px;
 }
 
+th{
+    cursor: pointer;
+}
+
+.filteredCategory{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filteredCategory > text {
+    padding-right: 5px;
+}
+
+.ASC{
+	width: 0;
+	height: 0;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 14px solid #555;
+}
+
+.DESC{
+	width: 0;
+	height: 0;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-top: 14px solid #555;
+}
+
 /*Header*/
 .root{
     align-content: center;
@@ -49,4 +79,15 @@ td {
     display: flex;
     flex-direction: row;
     align-items: stretch;
+}
+
+/*Cards*/
+.filters{
+    width: 25%;
+}
+
+.searchResults{
+    padding-right: 1rem;
+    padding-left: 1rem;
+    width:75%;
 }
