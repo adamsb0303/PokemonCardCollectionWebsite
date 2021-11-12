@@ -157,6 +157,52 @@
                         ?>
                     </tbody>
                 </table>
+                <div class="pageSelect">
+                    <?php
+                        if($pageNum == 1)
+                            echo '<a style="color:grey">ᐸ</a>';
+                        else
+                            echo '<a href="cards.php?' . updateQString($orderByParam, $pageNum - 1) . '">ᐸ</a>';
+
+                        $sql = "SELECT COUNT(`card_id`) FROM `card`";
+                        $resultQuery = mysqli_query($link, $sql) or die(mysqli_error($link));
+                        $resultSize = mysqli_fetch_array($resultQuery);
+                        $max = floor($resultSize[0] / 50);
+                        if($pageNum < 3){
+                            for($i = 1; $i <= 3; $i++){
+                                if($i == $pageNum)
+                                    echo '<strong>'. $i . '</strong>';
+                                else
+                                    echo '<a href="cards.php?' . updateQString($orderByParam, $i) . '">' . $i .'</a>';
+                            }
+                            echo '<a>...</a>';
+                            echo '<a href="cards.php?' . updateQString($orderByParam, $max) . '">' . $max . '</a>';
+                        }else if($pageNum > $max - 2){
+                            echo '<a href="cards.php?' . updateQString($orderByParam, 1) . '">1</a>';
+                            echo '<a>...</a>';
+                            for($i = $max - 2; $i <= $max; $i++){
+                                if($i == $pageNum)
+                                    echo '<strong>'. $i . '</strong>';
+                                else
+                                    echo '<a href="cards.php?' . updateQString($orderByParam, $i) . '">' . $i .'</a>';
+                            }
+                        }else{
+                            echo '<a href="cards.php?' . updateQString($orderByParam, 1) . '">1</a>';
+                            if($pageNum - 2 != 1)
+                                echo '<a>...</a>';
+                            echo '<a href="cards.php?' . updateQString($orderByParam, $pageNum - 1) . '">' . $pageNum - 1 . '</a>';
+                            echo '<strong>' . $pageNum . '</strong>';
+                            echo '<a href="cards.php?' . updateQString($orderByParam, $pageNum + 1) . '">' . $pageNum + 1 . '</a>';
+                            if($pageNum + 2 != $max)
+                                echo '<a>...</a>';
+                            echo '<a href="cards.php?' . updateQString($orderByParam, $max) . '">' . $max . '</a>';
+                        }
+                        if($pageNum == $max)
+                            echo '<a style="color:grey">ᐳ</a>';
+                        else
+                            echo '<a href="cards.php?' . updateQString($orderByParam, $pageNum + 1) . '">ᐳ</a>';
+                    ?>
+                </div>
             </div>
         </div>
     </body>

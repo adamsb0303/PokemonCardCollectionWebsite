@@ -92,3 +92,12 @@ a {
     padding-left: 1rem;
     width:75%;
 }
+
+.pageSelect{
+    display: flex;
+    justify-content: space-between;
+    width: 25%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: 1rem;
+}
