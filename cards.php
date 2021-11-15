@@ -61,7 +61,7 @@
                     <ul>
                         <?php
                             $sql = "SELECT `set_name`, `generation` FROM `set`
-                                    ORDER BY `generation` ASC";
+                                    ORDER BY `generation` ASC, `set_id`";
                             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
                             $currentGen = 1;
                             echo '<strong>Search</strong><br/>';
@@ -108,8 +108,8 @@
                                 $sql .= "`card_name` LIKE '%" . $search . "%'";
                                 $countSQL .= "`card_name` LIKE '%" . $search . "%'";
                                 if(!empty($set)){
-                                    $sql .= " OR";
-                                    $countSQL .= " OR";
+                                    $sql .= " AND (";
+                                    $countSQL .= " AND (";
                                 }
                             }
 
@@ -122,6 +122,11 @@
 
                                 $sql .= "OR `set_name` = '" . $set[$i] . "' ";
                                 $countSQL .= "OR `set_name` = '" . $set[$i] . "' ";
+
+                                if($i == count($set) - 1){
+                                    $sql .= ") ";
+                                    $countSQL .= ") ";
+                                }
                             }
                             
                             //select order
