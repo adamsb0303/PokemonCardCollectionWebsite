@@ -123,7 +123,7 @@
                                 $sql .= "OR `set_name` = '" . $set[$i] . "' ";
                                 $countSQL .= "OR `set_name` = '" . $set[$i] . "' ";
 
-                                if($i == count($set) - 1){
+                                if($i == count($set) - 1 && $search != ""){
                                     $sql .= ") ";
                                     $countSQL .= ") ";
                                 }
