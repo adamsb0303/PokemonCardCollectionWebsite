@@ -1,14 +1,32 @@
 <?php
-    function updateQString($search, $orderByParam, $pageNum){
+    function updateQString($search, $sets, $orderByParam, $pageNum){
         $qString = "";
         //Search
-        $qString .= "s=" . $search . "&";
+        if($search != "")
+            $qString .= "search=" . $search . "&";
+        //sets
+        $qString .= "set=" . implode(",", $sets) . "&";
         //Sort Order
         $qString .= "sort=" . $orderByParam . "&";
         //Page Num
         $qString .= "page=" . $pageNum;
 
         return $qString;
+    }
+
+    function addToArray($arr, $val){
+        array_push($arr, $val);
+        return $arr;
+    }
+
+    function removeFromArray($arr, $val){
+        for($i = 0; $i < count($arr); $i++)
+            if($arr[$i] == $val){
+                unset($arr[$i]);
+                break;
+            }
+        
+        return array_values($arr);
     }
 ?>
 
@@ -29,41 +47,40 @@
                 if(!empty($_GET['sort']))
                     $orderByParam = $_GET['sort'];
             $search = "";
-                if(!empty($_GET['s']))
-                    $search = $_GET['s'];
-            $set = "";
+                if(!empty($_GET['search']))
+                    $search = $_GET['search'];
+            $set = [];
                 if(!empty($_GET['set']))
-                    $search = $_GET['set'];
-            $variant = "";
-                if(!empty($_GET['variant']))
-                    $orderByParam = $_GET['variant'];
+                    $set = explode(",", $_GET['set']);
         ?>
         <div class="root" style="padding-top:16px; padding-bottom:16px;">
             <div class="filters">
                 <div style="border: 1px solid grey; padding:16px;">
-                    <strong>Filters</strong><br/>
-                    <input type="text" style="border: 1px solid black" placeholder="search..."><br/>
-                    Set<br/>
+                    <h3 style="text-decoration-line: underline;">Filters</h3>
                     <ul>
                         <?php
                             $sql = "SELECT `set_name`, `generation` FROM `set`
                                     ORDER BY `generation` ASC";
                             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
                             $currentGen = 1;
-                            echo '<li>Generation 1<ul>';
+                            echo '<strong>Search</strong><br/>';
+                            echo '<input type="text" style="border: 1px solid black" placeholder="search..."><br/><br/>';
+                            echo '<strong>Set</strong><br/>';
+                            echo 'Generation 1<br/>';
                             while($setName = mysqli_fetch_array($result)){
                                 if($currentGen < $setName[1]){
-                                    echo '</ul></li>';
-                                    echo '<li>Generation ' . $setName[1];
-                                    echo '<ul>';
+                                    echo 'Generation ' . $setName[1] . '<br/>';
                                     $currentGen = $setName[1];
                                 }
-                                echo '<li>' . $setName[0] . '</li>';
+                                echo '<div class="setFilter">';
+                                if(in_array($setName[0], $set))
+                                    echo '<input type="checkbox" id="' . $setName[0] . '" checked> <a href="cards.php?' . updateQString($search, removeFromArray($set, $setName[0]), $orderByParam, $pageNum) . '">' . $setName[0] . '</a></input><br/>';
+                                else
+                                    echo '<input type="checkbox" id="' . $setName[0] . '"> <a href="cards.php?' . updateQString($search, addToArray($set, $setName[0]), $orderByParam, $pageNum) . '">' . $setName[0] . '</a></input><br/>';
+                                echo '</div>';
                             }
-                            echo '</ul></li>';
                         ?>
                     </ul>
-                    Variant<br/>
                     <input type="submit" name="submit" value="Search"/>
                 </div>
             </div>
@@ -82,6 +99,10 @@
                                 $sql .= "WHERE `card_name` LIKE '%" . $search . "%' ";
                                 $countSQL .= "WHERE `card_name` LIKE '%" . $search . "%' ";
                             }
+
+                            //restrict set
+                            for($i = 0; $i < count($set); $i++)
+                                $sql .= "WHERE `set_name` LIKE '" . $set[$i] . "' ";
                             
                             //select order
                             $sortCategory = substr($orderByParam,0,3);
@@ -97,60 +118,60 @@
                                 $sql .= "ORDER BY `card_name` " . $sortDirection . ", `card_id` ";
                                 echo '<th>
                                         <div class="filteredCategory">
-                                            <a href="cards.php?' . updateQString($search, "NAM" . ($sortNum % 2) + 1, $pageNum) . '">Name</a>
+                                            <a href="cards.php?' . updateQString($search, $set, "NAM" . ($sortNum % 2) + 1, $pageNum) . '">Name</a>
                                             <div class="' . $sortDirection . '"></div>
                                         </div>
                                     </th>';
                             }else
-                                echo '<th><a href="cards.php?' . updateQString($search, "NAM1", $pageNum) . '">Name</a></th>';
+                                echo '<th><a href="cards.php?' . updateQString($search, $set, "NAM1", $pageNum) . '">Name</a></th>';
 
                             //Sort Set
                             if($sortCategory == "SET"){
                                 $sql .= "ORDER BY `set_name` " . $sortDirection . ", `card_id` ";
                                 echo '<th>
                                         <div class="filteredCategory">
-                                            <a href="cards.php?' . updateQString($search, "SET" . ($sortNum % 2) + 1, $pageNum) . '">Set</a>
+                                            <a href="cards.php?' . updateQString($search, $set, "SET" . ($sortNum % 2) + 1, $pageNum) . '">Set</a>
                                             <div class="' . $sortDirection . '"></div>
                                         </div>
                                     </th>';
                             }else
-                                echo '<th><a href="cards.php?' . updateQString($search, "SET1", $pageNum) . '">Set</a></th>';
+                                echo '<th><a href="cards.php?' . updateQString($search, $set, "SET1", $pageNum) . '">Set</a></th>';
 
                             //Sort Set Number
                             if($sortCategory == "NUM"){
-                                $sql .= "ORDER BY `set_num` " . $sortDirection . ", `card_id` ";
+                                $sql .= "ORDER BY `card_id` " . $sortDirection . " ";
                                 echo '<th>
                                         <div class="filteredCategory">
-                                            <a href="cards.php?' . updateQString($search, "NUM" . ($sortNum % 2) + 1, $pageNum) . '">Num</a>
+                                            <a href="cards.php?' . updateQString($search, $set, "NUM" . ($sortNum % 2) + 1, $pageNum) . '">Num</a>
                                             <div class="' . $sortDirection . '"></div>
                                         </div>
                                     </th>';
                             }else
-                                echo '<th><a href="cards.php?' . updateQString($search, "NUM1", $pageNum) . '">Num</a></th>';
+                                echo '<th><a href="cards.php?' . updateQString($search, $set, "NUM1", $pageNum) . '">Num</a></th>';
 
                             //Sort Variant
                             if($sortCategory == "VAR"){
                                 $sql .= "ORDER BY `variant_name` " . $sortDirection . ", `card_id` ";
                                 echo '<th>
                                         <div class="filteredCategory">
-                                            <a href="cards.php?' . updateQString($search, "VAR" . ($sortNum % 2) + 1, $pageNum) . '">Variant</a>
+                                            <a href="cards.php?' . updateQString($search, $set, "VAR" . ($sortNum % 2) + 1, $pageNum) . '">Variant</a>
                                             <div class="' . $sortDirection . '"></div>
                                         </div>
                                     </th>';
                             }else
-                                echo '<th><a href="cards.php?' . updateQString($search, "VAR1", $pageNum) . '">Variant</a></th>';
+                                echo '<th><a href="cards.php?' . updateQString($search, $set, "VAR1", $pageNum) . '">Variant</a></th>';
 
                             //Sort Price
                             if($sortCategory == "PRI"){
                                 $sql .= "ORDER BY `market_price` " . $sortDirection . ", `card_id` ";
                                 echo '<th>
                                         <div class="filteredCategory">
-                                            <a href="cards.php?' . updateQString($search, "PRI" . ($sortNum % 2) + 1, $pageNum) . '">Price</a>
+                                            <a href="cards.php?' . updateQString($search, $set, "PRI" . ($sortNum % 2) + 1, $pageNum) . '">Price</a>
                                             <div class="' . $sortDirection . '"></div>
                                         </div>
                                       </th>';
                             }else
-                                echo '<th><a href="cards.php?' . updateQString($search, "PRI1", $pageNum) . '">Price</a></th>';
+                                echo '<th><a href="cards.php?' . updateQString($search, $set, "PRI1", $pageNum) . '">Price</a></th>';
                         ?>
                     </thead>
                     <tbody>
@@ -182,50 +203,50 @@
                         if($pageNum == 1)
                             echo '<a style="color:grey">ᐸ</a>';
                         else
-                            echo '<a href="cards.php?' . updateQString($search, $orderByParam, $pageNum - 1) . '">ᐸ</a>';
+                            echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, $pageNum - 1) . '">ᐸ</a>';
 
                         if($max <= 5){
                             for($i = 1; $i <= $max; $i++){
                                 if($i == $pageNum)
                                     echo '<strong>'. $i . '</strong>';
                                 else
-                                    echo '<a href="cards.php?' . updateQString($search, $orderByParam, $i) . '">' . $i .'</a>';
+                                    echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, $i) . '">' . $i .'</a>';
                             }
                         }else if($pageNum <= 4){
                             for($i = 1; $i <= 5; $i++){
                                 if($i == $pageNum)
                                     echo '<strong>'. $i . '</strong>';
                                 else
-                                    echo '<a href="cards.php?' . updateQString($search, $orderByParam, $i) . '">' . $i .'</a>';
+                                    echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, $i) . '">' . $i .'</a>';
                             }
                             echo '<a>...</a>';
-                            echo '<a href="cards.php?' . updateQString($search, $orderByParam, $max) . '">' . $max . '</a>';
+                            echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, $max) . '">' . $max . '</a>';
                         }else if($pageNum > $max - 4){
-                            echo '<a href="cards.php?' . updateQString($search, $orderByParam, 1) . '">1</a>';
+                            echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, 1) . '">1</a>';
                             echo '<a>...</a>';
                             for($i = $max - 4; $i <= $max; $i++){
                                 if($i == $pageNum)
                                     echo '<strong>'. $i . '</strong>';
                                 else
-                                    echo '<a href="cards.php?' . updateQString($search, $orderByParam, $i) . '">' . $i .'</a>';
+                                    echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, $i) . '">' . $i .'</a>';
                             }
                         }else{
-                            echo '<a href="cards.php?' . updateQString($search, $orderByParam, 1) . '">1</a>';
+                            echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, 1) . '">1</a>';
                             if($pageNum - 2 != 1)
                                 echo '<a>...</a>';
-                            echo '<a href="cards.php?' . updateQString($search, $orderByParam, $pageNum - 2) . '">' . $pageNum - 2 . '</a>';
-                            echo '<a href="cards.php?' . updateQString($search, $orderByParam, $pageNum - 1) . '">' . $pageNum - 1 . '</a>';
+                            echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, $pageNum - 2) . '">' . $pageNum - 2 . '</a>';
+                            echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, $pageNum - 1) . '">' . $pageNum - 1 . '</a>';
                             echo '<strong>' . $pageNum . '</strong>';
-                            echo '<a href="cards.php?' . updateQString($search, $orderByParam, $pageNum + 1) . '">' . $pageNum + 1 . '</a>';
-                            echo '<a href="cards.php?' . updateQString($search, $orderByParam, $pageNum + 2) . '">' . $pageNum + 2 . '</a>';
+                            echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, $pageNum + 1) . '">' . $pageNum + 1 . '</a>';
+                            echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, $pageNum + 2) . '">' . $pageNum + 2 . '</a>';
                             if($pageNum + 2 != $max)
                                 echo '<a>...</a>';
-                            echo '<a href="cards.php?' . updateQString($search, $orderByParam, $max) . '">' . $max . '</a>';
+                            echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, $max) . '">' . $max . '</a>';
                         }
                         if($pageNum == $max)
                             echo '<a style="color:grey">ᐳ</a>';
                         else
-                            echo '<a href="cards.php?' . updateQString($search, $orderByParam, $pageNum + 1) . '">ᐳ</a>';
+                            echo '<a href="cards.php?' . updateQString($search, $set, $orderByParam, $pageNum + 1) . '">ᐳ</a>';
                     ?>
                 </div>
             </div>
