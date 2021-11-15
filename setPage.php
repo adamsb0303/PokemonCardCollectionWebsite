@@ -3,7 +3,6 @@
     <head>
         <link rel="stylesheet" href="CSS/setPage.css">
         <link rel="stylesheet" href="CSS/index.css">
-        <script src="JavaScript/setPage.js"></script>
         <?php
             $name = $_GET['set'];
             echo '<title>' . $name . '</title>';
