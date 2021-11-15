@@ -102,7 +102,10 @@
 
                             //restrict set
                             for($i = 0; $i < count($set); $i++)
-                                $sql .= "WHERE `set_name` LIKE '" . $set[$i] . "' ";
+                                if($i == 0)
+                                    $sql .= "WHERE `set_name` LIKE '" . $set[$i] . "' ";
+                                else
+                                    $sql .= "OR `set_name` LIKE '" . $set[$i] . "' ";
                             
                             //select order
                             $sortCategory = substr($orderByParam,0,3);
