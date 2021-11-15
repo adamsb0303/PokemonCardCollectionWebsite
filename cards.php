@@ -156,7 +156,7 @@
 
                             //Sort Set Number
                             if($sortCategory == "NUM"){
-                                $sql .= "ORDER BY `set_num` " . $sortDirection . ", `card_id` ";
+                                $sql .= "ORDER BY cast(`set_num` as unsigned) " . $sortDirection . ", `card_id` ";
                                 echo '<th>
                                         <div class="filteredCategory">
                                             <a href="cards.php?' . updateQString($search, $set, "NUM" . ($sortNum % 2) + 1, $pageNum) . '">Num</a>
