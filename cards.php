@@ -93,19 +93,33 @@
                                     JOIN `variant` ON card.variant_id = variant.variant_id
                                     JOIN `set` ON card.set_id = set.set_id ";
 
+                            $countSQL = "SELECT COUNT(`card_id`) FROM `card` 
+                                        JOIN `set` ON card.set_id = set.set_id ";
+                            if($search != "" || !empty($set)){
+                                $sql .= "WHERE ";
+                                $countSQL .= "WHERE ";
+                            }
+
                             //word search
-                            $countSQL = "SELECT COUNT(`card_id`) FROM `card` ";
                             if($search != ""){
-                                $sql .= "WHERE `card_name` LIKE '%" . $search . "%' ";
-                                $countSQL .= "WHERE `card_name` LIKE '%" . $search . "%' ";
+                                $sql .= "`card_name` LIKE '%" . $search . "%'";
+                                $countSQL .= "`card_name` LIKE '%" . $search . "%'";
+                                if(!empty($set)){
+                                    $sql .= " OR";
+                                    $countSQL .= " OR";
+                                }
                             }
 
                             //restrict set
-                            for($i = 0; $i < count($set); $i++)
-                                if($i == 0)
-                                    $sql .= "WHERE `set_name` LIKE '" . $set[$i] . "' ";
-                                else
-                                    $sql .= "OR `set_name` LIKE '" . $set[$i] . "' ";
+                            for($i = 0; $i < count($set); $i++){
+                                if($i == 0){
+                                    $sql .= "`set_name` = '" . $set[$i] . "' ";
+                                    $countSQL .= "`set_name` = '" . $set[$i] . "' ";
+                                }
+
+                                $sql .= "OR `set_name` = '" . $set[$i] . "' ";
+                                $countSQL .= "OR `set_name` = '" . $set[$i] . "' ";
+                            }
                             
                             //select order
                             $sortCategory = substr($orderByParam,0,3);
@@ -142,7 +156,7 @@
 
                             //Sort Set Number
                             if($sortCategory == "NUM"){
-                                $sql .= "ORDER BY `card_id` " . $sortDirection . " ";
+                                $sql .= "ORDER BY `set_num` " . $sortDirection . ", `card_id` ";
                                 echo '<th>
                                         <div class="filteredCategory">
                                             <a href="cards.php?' . updateQString($search, $set, "NUM" . ($sortNum % 2) + 1, $pageNum) . '">Num</a>
