@@ -65,7 +65,10 @@
                             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
                             $currentGen = 1;
                             echo '<strong>Search</strong><br/>';
-                            echo '<input type="text" style="border: 1px solid black" placeholder="search..."><br/><br/>';
+                            echo '<form method="get">';
+                                echo '<input type="text" name="search" style="border: 1px solid black" placeholder="search...">';
+                                echo '<input type="submit" value="Submit"><br/><br/>';
+                            echo '</form>';
                             echo '<strong>Set</strong><br/>';
                             echo 'Generation 1<br/>';
                             while($setName = mysqli_fetch_array($result)){
@@ -82,7 +85,6 @@
                             }
                         ?>
                     </ul>
-                    <input type="submit" name="submit" value="Search"/>
                 </div>
             </div>
             <div class="searchResults">
