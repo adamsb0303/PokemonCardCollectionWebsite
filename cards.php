@@ -5,7 +5,8 @@
         if($search != "")
             $qString .= "search=" . $search . "&";
         //sets
-        $qString .= "set=" . implode(",", $sets) . "&";
+        if(implode($sets) != "")
+            $qString .= "set=" . implode(",", $sets) . "&";
         //Sort Order
         $qString .= "sort=" . $orderByParam . "&";
         //Page Num
