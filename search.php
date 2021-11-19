@@ -3,7 +3,7 @@
         $qString = "";
         //Search
         if($search != "")
-            $qString .= "search=" . $search . "&";
+            $qString .= "q=" . $search . "&";
         //sets
         if(implode($sets) != "")
             $qString .= "set=" . implode(",", $sets) . "&";
