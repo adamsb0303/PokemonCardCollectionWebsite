@@ -47,8 +47,8 @@
                 if(!empty($_GET['sort']))
                     $orderByParam = $_GET['sort'];
             $search = "";
-                if(!empty($_GET['search']))
-                    $search = $_GET['search'];
+                if(!empty($_GET['q']))
+                    $search = $_GET['q'];
             $set = [];
                 if(!empty($_GET['set']))
                     $set = explode(",", $_GET['set']);
