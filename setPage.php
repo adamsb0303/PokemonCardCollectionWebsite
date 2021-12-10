@@ -55,7 +55,7 @@
                         '</td>' .
                         //Card Name
                         '<td>' .
-                            '<a href="https://www.tcgplayer.com/product/' . $variant['product_id'] . '">' . $variant['card_name'] . '</a>' .
+                            '<a href="./card.php?id=' . $variant['card_id'] . '">' . $variant['card_name'] . '</a>' .
                         '</td>';
                 }
                 //Market Price
