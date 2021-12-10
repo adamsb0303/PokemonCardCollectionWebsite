@@ -56,7 +56,17 @@ td {
     align-items: stretch;
 }
 
-/*Cards*/
+/*Card*/
+.cardInfo{
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+}
+
+/*Search*/
 .filters{
     width: 25%;
 }

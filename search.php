@@ -65,7 +65,7 @@
                             $currentGen = 1;
                             echo '<strong>Search</strong><br/>';
                             echo '<form method="get">';
-                                echo '<input type="text" name="search" class="searchField" style="" placeholder="search...">';
+                                echo '<input type="text" name="q" class="searchField" style="" placeholder="search...">';
                                 echo '<input type="submit" value="Submit" class="searchSubmit"><br/><br/>';
                             echo '</form>';
                             echo '<strong>Set</strong><br/>';
