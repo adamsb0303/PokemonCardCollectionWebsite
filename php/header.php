@@ -10,7 +10,7 @@
         </div>
         <div class="siteLinks">
             <nav>
-                <a class="navItem" href="">Log in</a>
+                <div style="padding-top:6px;" class="g-signin2" data-onsuccess="onSignIn"></div>
             </nav>
         </div>
     </div>

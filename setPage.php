@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <?php include_once "php/head.php" ?>
         <link rel="stylesheet" href="CSS/setPage.css">
-        <link rel="stylesheet" href="CSS/index.css">
         <?php
             $name = $_GET['set'];
             echo '<title>' . $name . '</title>';

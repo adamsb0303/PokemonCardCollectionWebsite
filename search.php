@@ -33,7 +33,7 @@
 
 <html>
     <head>
-        <link rel="stylesheet" href="CSS/index.css">
+        <?php include_once "php/head.php" ?>
         <title>Search</title>
     </head>
     <body>

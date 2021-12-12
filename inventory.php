@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <?php include_once "php/head.php" ?>
         <link rel="stylesheet" href="CSS/inventory.css">
-        <link rel="stylesheet" href="CSS/index.css">
         <script src="JavaScript/inventory.js"></script>
         <title>Inventory</title>
     </head>

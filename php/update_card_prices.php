@@ -15,10 +15,12 @@
         $products = mysqli_query($link, $sql) or die(mysqli_error($link));
 
         while($productRow = mysqli_fetch_array($products)){
-            if($productRow['product_id'] != 0){
+	    if($productRow['product_id'] != 0){
+                echo 'Updating: ' . $productRow['set_id'] . ' | ' . $productRow['card_name'] . "\n";
                 updateCardPrice($productRow['product_id'], $bearerToken);
             }
-            if($index % 300 == 0){
+	    if($index % 300 == 0){
+		echo 'Sleeping...' . "\n";
                 sleep(60);
             }  
             $index++;
