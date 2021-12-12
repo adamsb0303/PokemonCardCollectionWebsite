@@ -5,7 +5,7 @@
     </head>
     <body>
         <?php
-            include "PHP/header.php";
+            include "php/header.php";
         ?>
     </body>
 </html>

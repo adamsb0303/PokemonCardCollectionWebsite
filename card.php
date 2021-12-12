@@ -4,7 +4,7 @@
     if(!empty($_GET['id']))
         $cardID = $_GET['id'];
 
-    include_once "PHP/connect.php";
+    include_once "php/connect.php";
 
     //push form data to sql server
     if(isset($_POST['submit'])){
@@ -65,7 +65,7 @@
         <title><?php echo $cardName . " (" . $setNum . ") - " . $variant; ?></title>
     </head>
     <body>
-        <?php include "PHP/header.php";?>
+        <?php include "php/header.php";?>
         <div class="root" style="padding-top:16px; padding-bottom:16px;">
             <div style="width:100%;">
                 <div style="display:flex; width:100%;">
@@ -106,7 +106,7 @@
                                 </select>
                             <br/>
                             <!--Submit-->
-                            <input type="submit" name="submit" value="Submit"/>
+                            <input type="submit" name="submit" value="Submit" disabled/>
                             <br/><br/>
                         </form>
                     </div>

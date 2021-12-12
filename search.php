@@ -38,8 +38,8 @@
     </head>
     <body>
         <?php
-            include "PHP/header.php";
-            include_once "PHP/connect.php";
+            include "php/header.php";
+            include_once "php/connect.php";
             $pageNum = 1;
                 if(!empty($_GET['page']))
                     $pageNum = $_GET['page'];
