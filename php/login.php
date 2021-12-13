@@ -15,8 +15,12 @@
     }
     
     //If the user is already logged in, display logout
-    if (isset($_COOKIE['username'])) {
-        echo '<a class="navItem" href="?action=logout">Logout</a>';
+    if (isset($_COOKIE['ID'])) {
+        $sql = "SELECT * FROM user
+                WHERE user_id = " . $_COOKIE['ID'];
+        $userIdResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+        $userId = mysqli_fetch_array($userIdResult);
+        echo '<a class="navItem" href="?action=logout">' . $userId['user_name'] . '</a>';
     } else
     // authenticate code from Google OAuth Flow
     if (isset($_GET['code'])) {
