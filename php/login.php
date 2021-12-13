@@ -31,11 +31,11 @@
         $email =  $google_account_info->email;
         $name =  $google_account_info->name;
 
-        $sql = "SELECT user_email FROM user
+        $sql = "SELECT `user_email` FROM user
                 WHERE `user_email` = '$email'";
         $result = mysqli_query($link, $sql) or die(mysqli_error($link));
 
-        if(!empty($result)){
+        if($result->num_rows == 0){
             $sql = "INSERT INTO user(user_name, user_email)
                     VALUES ('$name', '$email')";
             $addUser = mysqli_query($link, $sql) or die(mysqli_error($link));
