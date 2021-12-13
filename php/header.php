@@ -16,9 +16,17 @@
                 ini_set('display_errors', 1);
                 ini_set('display_startup_errors', 1);
                 error_reporting(E_ALL);
+                
+                $cookie_name = "username";
 
+                if(isset($_GET['action'])){
+                    if($_GET['action'] == 'logout'){
+                        setcookie($cookie_name, "", time() - 3600);
+                        header("Location:.");
+                    }
+                }
                 if (isset($_COOKIE['username'])) {
-                    echo '<a class="navItem">Logout</a>';
+                    echo '<a class="navItem" href="?action=logout">Logout</a>';
                 } else
                 // authenticate code from Google OAuth Flow
                 if (isset($_GET['code'])) {
@@ -30,11 +38,10 @@
                     $google_account_info = $google_oauth->userinfo->get();
                     $email =  $google_account_info->email;
                     $name =  $google_account_info->name;
-                
-                    $cookie_name = "username";
+
                     $cookie_value = $name;
                     setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
-                    header("Location: ../index.php");
+                    header("Location: .");
                 // now you can use this profile info to create account in your website and make user logged in.
                 } else {
                     echo '<a class="navItem" href="'.$client->createAuthUrl().'">Login</a>';
