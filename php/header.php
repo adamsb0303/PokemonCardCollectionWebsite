@@ -10,7 +10,36 @@
         </div>
         <div class="siteLinks">
             <nav>
-                <div style="padding-top:6px;" class="g-signin2" data-onsuccess="onSignIn"></div>
+            <?php
+                include "php/google_connect.php";
+
+                ini_set('display_errors', 1);
+                ini_set('display_startup_errors', 1);
+                error_reporting(E_ALL);
+
+                if (isset($_COOKIE['username'])) {
+                    echo '<a class="navItem">Logout</a>';
+                } else
+                // authenticate code from Google OAuth Flow
+                if (isset($_GET['code'])) {
+                    $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+                    $client->setAccessToken($token['access_token']);
+                    
+                    // get profile info
+                    $google_oauth = new Google_Service_Oauth2($client);
+                    $google_account_info = $google_oauth->userinfo->get();
+                    $email =  $google_account_info->email;
+                    $name =  $google_account_info->name;
+                
+                    $cookie_name = "username";
+                    $cookie_value = $name;
+                    setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+                    header("Location: ../index.php");
+                // now you can use this profile info to create account in your website and make user logged in.
+                } else {
+                    echo '<a class="navItem" href="'.$client->createAuthUrl().'">Login</a>';
+                }
+            ?>
             </nav>
         </div>
     </div>
