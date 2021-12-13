@@ -5,13 +5,11 @@
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
-    
-    $cookie_name = "username";
 
     //Logout
     if(isset($_GET['action'])){
         if($_GET['action'] == 'logout'){
-            setcookie("username", "", time() - 3600);
+            setcookie("ID", "", time() - 3600);
             header("Location:.");
         }
     }
@@ -38,11 +36,17 @@
         if($result->num_rows == 0){
             $sql = "INSERT INTO user(user_name, user_email)
                     VALUES ('$name', '$email')";
-            $addUser = mysqli_query($link, $sql) or die(mysqli_error($link));
+            mysqli_query($link, $sql) or die(mysqli_error($link));
         }
 
+        $sql = "SELECT user_id FROM user
+                WHERE user_name = '$name' AND user_email = '$email'";
+        $userIdResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+        $userId = mysqli_fetch_array($userIdResult)['user_id'];
+
         //create email cookie
-        $cookie_value = $email;
+        $cookie_name = "ID";
+        $cookie_value = $userId;
         setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
         header("Location: .");
     // now you can use this profile info to create account in your website and make user logged in.
