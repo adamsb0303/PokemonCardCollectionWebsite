@@ -1,4 +1,17 @@
 <?php
+    //Creates random key for users so that private user functions aren't available through simple cookie editing
+    function getKey($n) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+    
+        for ($i = 0; $i < $n; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+    
+        return $randomString;
+    }
+
     include "php/google_connect.php";
     include "php/connect.php";
 
@@ -10,6 +23,7 @@
     if(isset($_GET['action'])){
         if($_GET['action'] == 'logout'){
             setcookie("ID", "", time() - 3600);
+            setcookie("Key", "", time() - 3600);
             header("Location:.");
         }
     }
@@ -38,20 +52,19 @@
         $result = mysqli_query($link, $sql) or die(mysqli_error($link));
 
         if($result->num_rows == 0){
-            $sql = "INSERT INTO user(user_name, user_email)
-                    VALUES ('$name', '$email')";
+            $sql = "INSERT INTO user(user_name, user_email, user_key)
+                    VALUES ('$name', '$email' , '" . getKey(50) . "')";
             mysqli_query($link, $sql) or die(mysqli_error($link));
         }
 
         $sql = "SELECT user_id FROM user
                 WHERE user_name = '$name' AND user_email = '$email'";
         $userIdResult = mysqli_query($link, $sql) or die(mysqli_error($link));
-        $userId = mysqli_fetch_array($userIdResult)['user_id'];
+        $userId = mysqli_fetch_array($userIdResult);
 
-        //create email cookie
-        $cookie_name = "ID";
-        $cookie_value = $userId;
-        setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+        //create cookies
+        setcookie("ID", $userId['user_id'], time() + (86400 * 30), "/");
+        setcookie("Key", $userId['user_key'], time() + (86400 * 30), "/");
         header("Location: .");
     // now you can use this profile info to create account in your website and make user logged in.
     } else {
