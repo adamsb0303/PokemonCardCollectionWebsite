@@ -36,11 +36,15 @@
 
         $sql = "INSERT INTO `collection` ($queryValues) VALUES (" . implode(", ", $formValues) . ");";
         mysqli_query($link, $sql) or die(mysqli_error($link));
+        echo $sql;
 
-        $sql = "UPDATE user
-                SET user_cost = (SELECT user_cost FROM user WHERE user_id = " . $_COOKIE['ID'] . ")+ " . $_POST['price'] . 
-                "WHERE user_id = " .$_COOKIE['ID'];
-        mysqli_query($link, $sql) or die(mysqli_error($link));
+        if($purcahsePrice){
+            $sql = "UPDATE user
+                    SET user_cost = (SELECT user_cost FROM user WHERE user_id = " . $_COOKIE['ID'] . ")+ " . $_POST['price'] . 
+                    "WHERE user_id = " .$_COOKIE['ID'];
+                    echo $sql;
+            mysqli_query($link, $sql) or die(mysqli_error($link));
+        }
     }
 
     //get every variant of the given card
@@ -97,7 +101,7 @@
                         <!--In Inventory-->
                         <?php if($signedIn){
                         echo '<br/>Currently Owned: ';
-                        $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
+                        $sql = "SELECT COUNT(DISTINCT collection.purchase_id) FROM `collection`
                                 JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
                                 WHERE `collection`.`card_id` = $cardID
                                 AND `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
