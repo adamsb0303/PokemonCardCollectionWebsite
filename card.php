@@ -83,6 +83,18 @@
                 <div style="display: flex; width:100%;">
                     <div style="width: 50%;">
                         <!--Inventory-->
+                        <!--In Inventory-->
+                        <?php if($signedIn){
+                        echo '<br/>Currently Owned: ';
+                        $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
+                                JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
+                                WHERE `collection`.`card_id` = $cardID
+                                AND `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
+                                AND `user_key` = '" . $_COOKIE["Key"] . "'";
+                        $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+                        $cardsOwned = mysqli_fetch_array($userInfoResult)[0];
+                        echo $cardsOwned;
+                        }?>
                         <form method="post">
                             <br><text>Inventory: </text><br/>
                             <!--Price Purchased-->
