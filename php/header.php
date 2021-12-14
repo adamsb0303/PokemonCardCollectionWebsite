@@ -4,7 +4,9 @@
             <nav>
                 <a class="navItem" href="./index.php">Home</a>
                 <a class="navItem" href="./setList.php">Card Sets</a>
-                <a class="navItem" href="./inventory.php">Inventory</a>
+                <?php if(isset($_COOKIE['ID']) && isset($_COOKIE['Key']))
+                    echo '<a class="navItem" href="./inventory.php">Inventory</a>';
+                ?>
                 <a class="navItem" href="./search.php">Search</a>
             </nav>
         </div>
