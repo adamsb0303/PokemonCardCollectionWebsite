@@ -8,7 +8,7 @@
 
     //push form data to sql server
     if(isset($_POST['submit'])){
-        $formValues = array(1, $cardID);
+        $formValues = array($_COOKIE['ID'], $cardID);
         $condition =  NULL;
         $purchasePrice = NULL;
         $purchaseDate = NULL;
@@ -29,6 +29,11 @@
         }
 
         $sql = "INSERT INTO `collection` ($queryValues) VALUES (" . implode(", ", $formValues) . ");";
+        mysqli_query($link, $sql) or die(mysqli_error($link));
+
+        $sql = "UPDATE user
+                SET user_cost = (SELECT user_cost FROM user WHERE user_id = " . $_COOKIE['ID'] . ")+ " . $_POST['price'] . 
+                "WHERE user_id = " .$_COOKIE['ID'];
         mysqli_query($link, $sql) or die(mysqli_error($link));
     }
 
@@ -122,7 +127,7 @@
                             if(!$signedIn)
                                 echo '<input type="submit" name="submit" value="Submit" disabled/>';
                             else
-                                echo '<input type="submit" name="submit value="Submit"/>';?>
+                                echo '<input type="submit" name="submit" value="Submit"/>';?>
                             <br/><br/>
                         </form>
                     </div>
