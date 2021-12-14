@@ -61,7 +61,7 @@
                 echo '<tr>' .
                     //Card Name
                     '<td>' .
-                        $row['card_name'] .
+                        '<a href="./card.php?id=' . $row['card_id'] . '">' . $row['card_name'] . '</a>' .
                     '</td>' .
                     //Card Variant
                     '<td>' .
@@ -69,7 +69,7 @@
                     '</td>' .
                     //Set
                     '<td>' .
-                        $row['set_name'] .
+                        '<a href="./setPage.php?set=' . $row['set_name'] . '">' . $row['set_name'] . '</a>' . 
                     '</td>' .
                     //Set Num
                     '<td>' .

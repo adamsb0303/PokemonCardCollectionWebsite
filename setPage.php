@@ -46,7 +46,7 @@
                         '</td>' .
                         //Card Name
                         '<td>' .
-                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟&nbsp;&nbsp;' . $variant['variant_name'] .
+                            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;∟&nbsp;&nbsp;<a href="./card.php?id=' . $variant['card_id'] . '">' . $variant['variant_name'] . '</a>' .
                         '</td>';
                 } else{
                     $cardTable .= '<tr class="cardRow">' .

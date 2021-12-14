@@ -212,7 +212,7 @@
                                 echo '<tr>';
                                     echo '<td><input type="checkbox"></td>';
                                     echo '<td><image src="https://product-images.tcgplayer.com/' . $card['product_id'] . '.jpg" style="height: 36pt; width: auto;"></image></td>';
-                                    echo '<td style="text-align:left; width: 1em">' . $card['card_name'] . '</td>';
+                                    echo '<td style="text-align:left; width: 1em"><a href="./card.php?id=' . $card['card_id'] . '">' .  $card['card_name'] . '</a></td>';
                                     echo '<td>' . $card['set_name'] . '</td>';
                                     echo '<td>' . $card['set_num'] . '</td>';
                                     echo '<td>' . $card['variant_name'] . '</td>';
