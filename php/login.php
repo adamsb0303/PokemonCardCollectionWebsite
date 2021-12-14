@@ -52,8 +52,8 @@
         $result = mysqli_query($link, $sql) or die(mysqli_error($link));
 
         if($result->num_rows == 0){
-            $sql = "INSERT INTO user(user_name, user_email, user_key)
-                    VALUES ('$name', '$email' , '" . getKey(50) . "')";
+            $sql = "INSERT INTO user(user_name, user_email, user_key, user_value, user_cost)
+                    VALUES ('$name', '$email' , '" . getKey(50) . "', 0, 0)";
             mysqli_query($link, $sql) or die(mysqli_error($link));
         }
 

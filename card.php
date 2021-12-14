@@ -15,9 +15,6 @@
     //push form data to sql server
     if(isset($_POST['submit'])){
         $formValues = array($_COOKIE['ID'], $cardID);
-        $condition =  NULL;
-        $purchasePrice = NULL;
-        $purchaseDate = NULL;
 
         $queryValues = "`user_id`, `card_id`";
 
@@ -28,6 +25,11 @@
         if($_POST['price'] != ''){
             $queryValues .= ', `purchase_price`';
             array_push($formValues, $_POST['price']);
+
+            $sql = "UPDATE user
+                    SET user_cost = (SELECT user_cost FROM user WHERE user_id = " . $_COOKIE['ID'] . ")+ " . $_POST['price'] . 
+                    " WHERE user_id = " .$_COOKIE['ID'];
+            mysqli_query($link, $sql) or die(mysqli_error($link));
         }
         if($_POST['date'] != ''){
             $queryValues .= ', `purchase_date`';
@@ -36,15 +38,6 @@
 
         $sql = "INSERT INTO `collection` ($queryValues) VALUES (" . implode(", ", $formValues) . ");";
         mysqli_query($link, $sql) or die(mysqli_error($link));
-        echo $sql;
-
-        if($purcahsePrice){
-            $sql = "UPDATE user
-                    SET user_cost = (SELECT user_cost FROM user WHERE user_id = " . $_COOKIE['ID'] . ")+ " . $_POST['price'] . 
-                    "WHERE user_id = " .$_COOKIE['ID'];
-                    echo $sql;
-            mysqli_query($link, $sql) or die(mysqli_error($link));
-        }
     }
 
     //get every variant of the given card
