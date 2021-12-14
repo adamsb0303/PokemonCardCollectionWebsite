@@ -7,11 +7,6 @@
         <title>Inventory</title>
     </head>
     <body>
-        <script>
-            if ( window.history.replaceState ) {
-                window.history.replaceState( null, null, window.location.href );
-            }
-        </script>
         <?php
             include 'php/header.php';
             include_once 'php/connect.php';
