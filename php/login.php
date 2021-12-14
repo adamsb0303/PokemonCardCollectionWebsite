@@ -57,7 +57,7 @@
             mysqli_query($link, $sql) or die(mysqli_error($link));
         }
 
-        $sql = "SELECT user_id FROM user
+        $sql = "SELECT * FROM user
                 WHERE user_name = '$name' AND user_email = '$email'";
         $userIdResult = mysqli_query($link, $sql) or die(mysqli_error($link));
         $userId = mysqli_fetch_array($userIdResult);

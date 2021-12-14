@@ -16,7 +16,7 @@
                 echo "Cookie named 'ID' is not set!";
               } else {
                 echo "Cookie 'ID' is set!<br>";
-                echo "Value is: " . $_COOKIE['ID'];
+                echo "ID is: " . $_COOKIE['ID'];
             }
         ?>
     </body>

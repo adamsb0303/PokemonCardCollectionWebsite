@@ -16,10 +16,14 @@
             include 'php/header.php';
             include_once 'php/connect.php';
 
+        if(isset($_COOKIE['ID']) && isset($_COOKIE['Key'])){
             $sql = "SELECT * FROM `collection`
                     JOIN `card` ON `collection`.`card_id` = `card`.`card_id`
                     JOIN `set` ON `card`.`set_id` = `set`.`set_id`
+                    JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
                     JOIN `variant` ON `variant`.`variant_id` = `card`.`variant_id`
+                    WHERE `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
+                    AND `user_key` = '" . $_COOKIE["Key"] . "'
                     ORDER BY `card`.`set_id`, `card`.`card_id`";
             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
         ?>
@@ -108,6 +112,7 @@
                 '</tr>';
             }
             echo '</table>';
+        }
         ?>
         </div>
     </body>
