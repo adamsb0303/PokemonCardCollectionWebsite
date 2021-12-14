@@ -106,7 +106,11 @@
                                 </select>
                             <br/>
                             <!--Submit-->
-                            <input type="submit" name="submit" value="Submit" disabled/>
+                            <?php
+                            if(!$signedIn)
+                                echo '<input type="submit" name="submit" value="Submit" disabled/>';
+                            else
+                                echo '<input type="submit" name="submit value="Submit"/>';?>
                             <br/><br/>
                         </form>
                     </div>
