@@ -9,49 +9,50 @@
         <?php
             include 'php/header.php';
             include_once 'php/connect.php';
+
             $sql = "SELECT * FROM `set`";
             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
+        ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th> 
 
-            $setListTable = "";
+                        </th>
+                        <th> 
 
-            $setListTable .= '<table>' .
-                '<thead>' .
-                    '<tr>' .
-                        '<th>' . 
+                        </th>
+                        <th <?php if($signedIn) echo 'colspan="2"';?>> 
+                            Master
+                        </th>
+                        <th <?php if($signedIn) echo 'colspan="2"';?>>
+                            Set
+                        </th>
+                    </tr>
+                    <tr>
+                        <th> 
 
-                        '</th>' .
-                        '<th>' . 
-
-                        '</th>' .
-                        '<th colspan="2">' . 
-                            'Master' .
-                        '</th>' .
-                        '<th colspan="2">' . 
-                            'Set' .
-                        '</th>' .
-                    '</tr>' .
-                    '<tr>' .
-                        '<th>' . 
-
-                        '</th>' .
-                        '<th>' .
-                            'Name' .
-                        '</th>' .
-                        '<th>' .
-                            'Price' .
-                        '</th>' .
-                        '<th>' .
-                            'Progress' .
-                        '</th>' .
-                        '<th>' .
-                            'Price' .
-                        '</th>' .
-                        '<th>' .
-                            'Progress' .
-                        '</th>' . 
-                    '</tr>' .
-                '</thead>';
-
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <?php if($signedIn)
+                        echo '<th>
+                            Progress
+                        </th>';?>
+                        <th>
+                            Price
+                        </th>
+                        <?php if($signedIn)
+                        echo '<th>
+                            Progress
+                        </th>' ;?>
+                    </tr>
+                </thead>
+            <?php
             $generationIndex = 0;
             while($row = mysqli_fetch_array($result)){ 
                 $setID = $row['set_id'];
@@ -66,41 +67,41 @@
                         WHERE `set_id` = $setID";
                 $setResult = mysqli_query($link, $sql) or die(mysqli_error($link));
                 $mSetOwned = mysqli_fetch_array($setResult);
-
-                $setListTable .= '<tr id="' . $row['set_name'] . '">' .
-                    //Name
-                    '<td style="vertical-align:middle">' .
-                        '<image src="Images/Symbols/' . $row['set_name'] . '.png" class="setImage"></image>' .
-                    '</td>' .
-                    '<td style="text-align:left;">' .
-                        '<a href="setPage.php?set=' . $row['set_name'] . '">' . $row['set_name'] . '</a>' .
-                    '</td>' .
-                    //M set price
-                    '<td>' .
-                        '$' . number_format($row['Mset_price'],2) .
-                    '</td>' . 
-                    //m set completion
-                    '<td>' .
+            ?>
+                <tr id="<?=$row['set_name']?>">
+                    <!--Name-->
+                    <td style="vertical-align:middle">
+                        <image src="Images/Symbols/<?=$row['set_name']?>.png" class="setImage"></image>
+                    </td>
+                    <td style="text-align:left;">
+                        <a href="setPage.php?set=<?=$row['set_name']?>"><?=$row['set_name']?></a>
+                    </td>
+                    <!--M set price-->
+                    <td>
+                        $<?=number_format($row['Mset_price'],2)?>
+                    </td> 
+                    <!--M set completion-->
+                    <?php if($signedIn){
+                    echo '<td>' .
                         $setOwned[0] . '/' .
                         $row['Mset_size'] .
-                    '</td>' .
-                    //set price
-                    '<td>' .
-                        '$' . number_format($row['set_price'],2) .
-                    '</td>' .
-                    //set completion
-                    '<td>' . 
+                    '</td>';
+                    }?>
+                    <!--Set price-->
+                    <td>
+                        $<?=number_format($row['set_price'],2)?>
+                    </td>
+                    <!--Set completion-->
+                    <?php if($signedIn){
+                    echo '<td>' .
                         $mSetOwned[0] . '/' .
                         $row['set_size'] .
-                    '</td>' .
-                '</tr>';
-            }
-            $setListTable .= '</table>';
+                    '</td>';
+                    }?>
 
-            echo '<div>';
-            echo $setListTable;
-            echo '</div>';
-        ?>
+                </tr>
+            <?php }//close while loop?>
+            </table>
         <p style="text-align:center;">
             This product uses TCGplayer data but is not endorsed or certified by TCGplayer.
         </p>

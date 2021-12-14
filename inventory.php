@@ -16,7 +16,7 @@
             include 'php/header.php';
             include_once 'php/connect.php';
 
-        if(isset($_COOKIE['ID']) && isset($_COOKIE['Key'])){
+        if($signedIn){
             $sql = "SELECT * FROM `collection`
                     JOIN `card` ON `collection`.`card_id` = `card`.`card_id`
                     JOIN `set` ON `card`.`set_id` = `set`.`set_id`
