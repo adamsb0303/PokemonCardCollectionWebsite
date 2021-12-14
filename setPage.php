@@ -32,8 +32,9 @@
                 '</th>' .
                 '<th>' .
                     'Average Price' .
-                '</th>' .
-                '<th>' .
+                '</th>';
+                if($signedIn)
+                $cardTable.= '<th>' .
                     'Owned' .
                 '</th>';
             while($variant = mysqli_fetch_array($variant_result)){
@@ -71,19 +72,21 @@
                         $cardTable .= '<text id="AV_' . $variant['card_id'] . '">$' . $variant['average_price'] . '</text>';
                     else
                         $cardTable .= '<text id="AV_' . $variant['card_id'] . '">-</text>'; 
-                $cardTable .= '</td>' .
+                $cardTable .= '</td>';
                 //Owned
-                '<td>';
-                    $cardID = $variant['card_id'];
-                    $sql = "SELECT * FROM `collection`
-                            WHERE `card_id` = $cardID";
-                    $collectionCheckResult = mysqli_query($link, $sql) or die(mysqli_error($link));
-                    $collectionCheck = mysqli_fetch_array($collectionCheckResult);
-                    if($collectionCheck == NULL)
-                        $cardTable .= '<text style="color:red">X</text>';
-                    else
-                        $cardTable .= '<text style="color:green">✓</text>';
-                $cardTable .= '</td>' .
+                if($signedIn){
+                    $cardTable .= '<td>';
+                        $cardID = $variant['card_id'];
+                        $sql = "SELECT * FROM `collection`
+                                WHERE `card_id` = $cardID";
+                        $collectionCheckResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+                        $collectionCheck = mysqli_fetch_array($collectionCheckResult);
+                        if($collectionCheck == NULL)
+                            $cardTable .= '<text style="color:red">X</text>';
+                        else
+                            $cardTable .= '<text style="color:green">✓</text>';
+                    $cardTable .= '</td>';
+                }
             '</tr>';
             }
             $cardTable .= '</table>';
@@ -101,18 +104,26 @@
             $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
             $mSumMarketPrice = mysqli_fetch_array($userInfoResult);
 
-            $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
-                    JOIN `card` ON collection.card_id = card.card_id
-                    WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')
-                    AND `variant_id` = 1";
-            $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
-            $cardsOwned = mysqli_fetch_array($userInfoResult);
+            if($signedIn){
+                $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
+                        JOIN `card` ON collection.card_id = card.card_id
+                        JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
+                        WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')
+                        AND `variant_id` = 1
+                        AND `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
+                        AND `user_key` = '" . $_COOKIE["Key"] . "'";
+                $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+                $cardsOwned = mysqli_fetch_array($userInfoResult);
 
-            $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
-                    JOIN `card` ON collection.card_id = card.card_id
-                    WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')";
-            $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
-            $mCardsOwned = mysqli_fetch_array($userInfoResult);
+                $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
+                        JOIN `card` ON collection.card_id = card.card_id
+                        JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
+                        WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')
+                        AND `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
+                        AND `user_key` = '" . $_COOKIE["Key"] . "'";
+                $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+                $mCardsOwned = mysqli_fetch_array($userInfoResult);
+            }
 
             echo '<div class="header">';
                 $sql = "SELECT * FROM `set` WHERE set_name = '$name'";
@@ -124,11 +135,14 @@
                 echo 'Set Price: $' . number_format($row['set_price'], 2) . '<br />';
                 echo 'Master Set Size: ' . $cardAmount . '<br/>';
                 echo 'Master Set Price: $' . number_format($row['Mset_price'], 2) . '<br />';
-                echo '<br/>';
-                echo 'Set Remainder: <text id="size">' . $row['set_size'] - $cardsOwned[0] . '</text><br />';
-                echo 'Set Market Price: $<text id="setPrice">' . number_format($row['set_price'] - $sumMarketPrice[0], 2) . '</text><br />';
-                echo 'Master Set Remainder: <text id="mSize">' . $cardAmount - $mCardsOwned[0] . '</text><br />';
-                echo 'Master Set Market Price: $<text id="mSetPrice">' . number_format($row['Mset_price'] - $mSumMarketPrice[0], 2) . '</text><br />';
+                if($signedIn){
+                    echo '<br/>';
+                    echo '<strong>Remaining</strong><br/>';
+                    echo 'Set: <text id="size">' . ($row['set_size'] - $cardsOwned[0]) . '</text><br />';
+                    echo 'Set Market Price: $<text id="setPrice">' . number_format($row['set_price'] - $sumMarketPrice[0], 2) . '</text><br />';
+                    echo 'Master Set: <text id="mSize">' . ($cardAmount - $mCardsOwned[0]) . '</text><br />';
+                    echo 'Master Set Market Price: $<text id="mSetPrice">' . number_format($row['Mset_price'] - $mSumMarketPrice[0], 2) . '</text><br />';
+                }
             echo '</div><br/>';
 
             echo $cardTable;
