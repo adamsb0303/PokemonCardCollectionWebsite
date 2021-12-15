@@ -3,10 +3,6 @@
     include 'update_card_prices.php';
     include 'update_Mset_size.php';
 
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-
     $sql = "SELECT COUNT(user_id) FROM user";
     $numUsers = mysqli_fetch_array(mysqli_query($link, $sql));
 

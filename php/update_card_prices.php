@@ -1,6 +1,4 @@
 <?php
-    //300 requests per minute max
-    //expires 9/5
     include_once "bearer_token.php";
     set_time_limit(60000);
 
@@ -8,20 +6,28 @@
     $sets = mysqli_query($link, $sql) or die(mysqli_error($link));
 
     $index = 1;
+    $start = $tic = time();
     while($setRow = mysqli_fetch_array($sets)){
         $setNum = $setRow['set_id'];
-        $sql = "SELECT * FROM `card` WHERE `set_id` = $setNum
+        $sql = "SELECT * FROM `card`
+                JOIN `set` ON `set`.`set_id` = `card`.`set_id`
+                WHERE `card`.`set_id` = $setNum
                 GROUP BY `product_id`";
         $products = mysqli_query($link, $sql) or die(mysqli_error($link));
 
         while($productRow = mysqli_fetch_array($products)){
-	    if($productRow['product_id'] != 0){
-                echo 'Updating: ' . $productRow['set_id'] . ' | ' . $productRow['card_name'] . "\n";
-                updateCardPrice($productRow['product_id'], $bearerToken);
-            }
-	    if($index % 300 == 0){
-		echo 'Sleeping...' . "\n";
-                sleep(60);
+            if($productRow['product_id'] != 0){
+                    echo 'Updating: ' . $productRow['set_name'] . ' | ' . $productRow['card_name'] . "\n";
+                    updateCardPrice($productRow['product_id'], $bearerToken);
+                }
+            //300 requests per minute max
+            if($index % 300 == 0){
+                $toc = ($tic + 60) - time();
+                if($toc > 0){
+                    echo 'Sleeping ' . $toc . " seconds...\n";
+                    sleep($toc);
+                }
+                $tic = time();
             }  
             $index++;
         }
@@ -31,6 +37,9 @@
                 WHERE `set_id` = $setNum";
         mysqli_query($link, $sql) or die(mysqli_error($link));
     }
+    
+    $end = time();
+    echo "Time elapsed: " . gmdate("H:i:s", $end-$start) . "\n";
 
     function updateCardPrice($product_id, $bearerToken){
         include "connect.php";
