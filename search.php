@@ -258,11 +258,11 @@
                             echo '<a href="search.php?' . updateQString($search, $set, $orderByParam, 1) . '">1</a>';
                             if($pageNum - 2 != 1)
                                 echo '<a>...</a>';
-                            echo '<a href="search.php?' . updateQString($search, $set, $orderByParam, $pageNum - 2) . '">' . $pageNum - 2 . '</a>';
-                            echo '<a href="search.php?' . updateQString($search, $set, $orderByParam, $pageNum - 1) . '">' . $pageNum - 1 . '</a>';
+                            echo '<a href="search.php?' . updateQString($search, $set, $orderByParam, $pageNum - 2) . '">' . ($pageNum - 2) . '</a>';
+                            echo '<a href="search.php?' . updateQString($search, $set, $orderByParam, $pageNum - 1) . '">' . ($pageNum - 1) . '</a>';
                             echo '<strong>' . $pageNum . '</strong>';
-                            echo '<a href="search.php?' . updateQString($search, $set, $orderByParam, $pageNum + 1) . '">' . $pageNum + 1 . '</a>';
-                            echo '<a href="search.php?' . updateQString($search, $set, $orderByParam, $pageNum + 2) . '">' . $pageNum + 2 . '</a>';
+                            echo '<a href="search.php?' . updateQString($search, $set, $orderByParam, $pageNum + 1) . '">' . ($pageNum + 1) . '</a>';
+                            echo '<a href="search.php?' . updateQString($search, $set, $orderByParam, $pageNum + 2) . '">' . ($pageNum + 2) . '</a>';
                             if($pageNum + 2 != $max)
                                 echo '<a>...</a>';
                             echo '<a href="search.php?' . updateQString($search, $set, $orderByParam, $max) . '">' . $max . '</a>';
