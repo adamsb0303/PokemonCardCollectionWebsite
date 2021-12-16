@@ -94,20 +94,27 @@
             }
             $cardTable .= '</table>';
 
-            $sql = "SELECT SUM(`market_price`) FROM `collection`
-                    JOIN `card` ON collection.card_id = card.card_id
-                    WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')
-                    AND `variant_id` = 1";
-            $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
-            $sumMarketPrice = mysqli_fetch_array($userInfoResult);
-
-            $sql = "SELECT SUM(`market_price`) FROM `collection`
-                    JOIN `card` ON collection.card_id = card.card_id
-                    WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')";
-            $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
-            $mSumMarketPrice = mysqli_fetch_array($userInfoResult);
 
             if($signedIn){
+                $sql = "SELECT SUM(`market_price`) FROM `collection`
+                        JOIN `card` ON collection.card_id = card.card_id
+                        JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
+                        WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')
+                        AND `variant_id` = 1
+                        AND `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
+                        AND `user_key` = '" . $_COOKIE["Key"] . "'";
+                $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+                $sumMarketPrice = mysqli_fetch_array($userInfoResult);
+
+                $sql = "SELECT SUM(`market_price`) FROM `collection`
+                        JOIN `card` ON collection.card_id = card.card_id
+                        JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
+                        WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')
+                        AND `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
+                        AND `user_key` = '" . $_COOKIE["Key"] . "'";
+                $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
+                $mSumMarketPrice = mysqli_fetch_array($userInfoResult);
+
                 $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
                         JOIN `card` ON collection.card_id = card.card_id
                         JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
