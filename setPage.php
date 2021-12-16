@@ -78,7 +78,10 @@
                     $cardTable .= '<td>';
                         $cardID = $variant['card_id'];
                         $sql = "SELECT * FROM `collection`
-                                WHERE `card_id` = $cardID";
+                                JOIN user on user.user_id = collection.user_id
+                                WHERE `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
+                                AND `user_key` = '" . $_COOKIE["Key"] . "'
+                                AND `card_id` = $cardID";
                         $collectionCheckResult = mysqli_query($link, $sql) or die(mysqli_error($link));
                         $collectionCheck = mysqli_fetch_array($collectionCheckResult);
                         if($collectionCheck == NULL)

@@ -58,13 +58,19 @@
                 $setID = $row['set_id'];
                 $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
                         JOIN `card` ON card.card_id = collection.card_id
-                        WHERE `set_id` = $setID AND `variant_id` = 1";
+                        JOIN `user` on user.user_id = collection.user_id
+                        WHERE `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
+                        AND `user_key` = '" . $_COOKIE["Key"] . "'
+                        AND `set_id` = $setID AND `variant_id` = 1";
                 $setResult = mysqli_query($link, $sql) or die(mysqli_error($link));
                 $setOwned = mysqli_fetch_array($setResult);
                 
                 $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
                         JOIN `card` ON card.card_id = collection.card_id
-                        WHERE `set_id` = $setID";
+                        JOIN `user` on user.user_id = collection.user_id
+                        WHERE `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
+                        AND `user_key` = '" . $_COOKIE["Key"] . "'
+                        AND `set_id` = $setID";
                 $setResult = mysqli_query($link, $sql) or die(mysqli_error($link));
                 $mSetOwned = mysqli_fetch_array($setResult);
             ?>
