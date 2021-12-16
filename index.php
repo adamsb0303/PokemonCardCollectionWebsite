@@ -7,6 +7,8 @@
     <body>
         <?php
             include "php/header.php";
+
+            $sql = "SELECT user_value, user_cost FROM user";
         ?>
     </body>
 </html>
