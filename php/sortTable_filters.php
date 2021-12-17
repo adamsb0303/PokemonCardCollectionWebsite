@@ -20,10 +20,13 @@
                         $currentGen = $setName[1];
                     }
                     echo '<div class="setFilter">';
-                    if(in_array($setName[0], $set))
-                        echo '<input type="checkbox" id="' . $setName[0] . '" checked> <a href="' . $pageName . '.php?' . updateQString($search, removeFromArray($set, $setName[0]), $orderByParam, $pageNum) . '">' . $setName[0] . '</a></input><br/>';
-                    else
-                        echo '<input type="checkbox" id="' . $setName[0] . '"> <a href="' . $pageName . '.php?' . updateQString($search, addToArray($set, $setName[0]), $orderByParam, $pageNum) . '">' . $setName[0] . '</a></input><br/>';
+                    if(in_array($setName[0], $set)){
+                        $newLink =  $pageName . '.php?' . updateQString($search, removeFromArray($set, $setName[0]), $orderByParam, $pageNum);
+                        echo '<input type="checkbox" value="' . $newLink . '" onClick="if (!this.checked) { window.location = this.value; }" checked> <a href="' . $newLink . '">' . $setName[0] . '</a></input><br/>';
+                    }else{
+                        $newLink =  $pageName . '.php?' . updateQString($search, addToArray($set, $setName[0]), $orderByParam, $pageNum);
+                        echo '<input type="checkbox" value="' . $newLink . '" onClick="if (this.checked) { window.location = this.value; }"> <a href="' . $newLink . '">' . $setName[0] . '</a></input><br/>';
+                    }
                     echo '</div>';
                 }
             ?>
