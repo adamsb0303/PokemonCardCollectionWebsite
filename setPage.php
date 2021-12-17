@@ -12,9 +12,10 @@
         <?php
             include 'php/header.php';
             include_once 'php/connect.php';
-            $sql = "SELECT * FROM `card` JOIN `variant` ON card.variant_id = variant.variant_id
-                    JOIN `rarities` ON card.rarity_id = rarities.rarity_id
-                    WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')";
+            $sql = "SELECT * FROM `card`
+                    JOIN `variant` ON card.variant_id = variant.variant_id
+                    WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')
+                    ORDER BY `order`, card.`variant_id`";
 
             $variant_result = mysqli_query($link, $sql) or die(mysqli_error($link));
 
