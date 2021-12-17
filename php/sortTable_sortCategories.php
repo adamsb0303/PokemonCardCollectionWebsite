@@ -12,8 +12,9 @@ if($search != "" || !empty($set)){
 
 //word search
 if($search != ""){
-    $sql .= "concat(`card_name`,`variant_name`) LIKE '%" . $search;
-    $countSQL .= "`concat(card_name`,`variant_name`) LIKE '%" . $search;
+    $sql .= "CONCAT(`card_name`,`variant_name`) LIKE '%" . $search . "%'";
+    $countSQL .= "CONCAT(`card_name`,`variant_name`) LIKE '%" . $search . "%'";
+
     if(!empty($set)){
         $sql .= " AND (";
         $countSQL .= " AND (";
