@@ -35,6 +35,7 @@
                                     JOIN `set` ON card.set_id = set.set_id ";
 
                             $countSQL = "SELECT COUNT(`card_id`) FROM `card` 
+                                        JOIN `variant` ON card.variant_id = variant.variant_id
                                         JOIN `set` ON card.set_id = set.set_id ";
                             if($search != "" || !empty($set)){
                                 $sql .= "WHERE ";
@@ -43,8 +44,8 @@
 
                             //word search
                             if($search != ""){
-                                $sql .= "`card_name` LIKE '%" . $search . "%'";
-                                $countSQL .= "`card_name` LIKE '%" . $search . "%'";
+                                $sql .= "CONCAT_WS(`card_name`,`variant_name`) LIKE '%" . $search . "%'";
+                                $countSQL .= "CONCAT_WS(`card_name`,`variant_name`) LIKE '%" . $search . "%'";
                                 if(!empty($set)){
                                     $sql .= " AND (";
                                     $countSQL .= " AND (";

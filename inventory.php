@@ -56,8 +56,8 @@
 
                             //word search
                             if($search != ""){
-                                $sql .= "`card_name` LIKE '%" . $search . "%'";
-                                $countSQL .= "`card_name` LIKE '%" . $search . "%'";
+                                $sql .= "concat(`card_name`,`variant_name`) LIKE '%" . $search . "%' OR `variant_name` LIKE '%" . $search . "%'";
+                                $countSQL .= "`concat(card_name`,`variant_name`) LIKE '%" . $search . "%' OR `variant_name` LIKE '%" . $search . "%'";
                                 if(!empty($set)){
                                     $sql .= " AND (";
                                     $countSQL .= " AND (";
