@@ -1,7 +1,17 @@
 <?php
     include "connect.php";
     include 'update_card_prices.php';
-    include 'update_Mset_size.php';
+
+    //Update master set size
+    $sql = "SELECT `set_id` FROM `set`";
+    $sets = mysqli_query($link, $sql) or die(mysqli_error($link));
+
+    while($setRow = mysqli_fetch_array($sets)){
+        $setID = $setRow['set_id'];
+        $sql = "UPDATE `set` SET `Mset_size` = (SELECT COUNT(`card_id`) FROM `card` WHERE `set_id` = $setID)
+                WHERE `set_id` = $setID";
+        mysqli_query($link, $sql) or die(mysqli_error($link));
+    }
 
     //Updates user values
     $sql = "SELECT COUNT(user_id) FROM user";
@@ -22,7 +32,7 @@
     $result = exec("mysqldump pokemon --password='$password' --user='$user' --single-transaction > " . $backup_file);
     
     if(empty($result))
-        echo "Backed up successful";
+        echo "Backed up successfully";
     else
         echo $result;
 ?>
