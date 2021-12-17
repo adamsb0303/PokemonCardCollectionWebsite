@@ -1,36 +1,4 @@
-<?php
-    function updateQString($search, $sets, $orderByParam, $pageNum){
-        $qString = "";
-        //Search
-        if($search != "")
-            $qString .= "q=" . $search . "&";
-        //sets
-        if(implode($sets) != "")
-            $qString .= "set=" . implode(",", $sets) . "&";
-        //Sort Order
-        $qString .= "sort=" . $orderByParam . "&";
-        //Page Num
-        $qString .= "page=" . $pageNum;
-
-        return $qString;
-    }
-
-    function addToArray($arr, $val){
-        array_push($arr, $val);
-        return $arr;
-    }
-
-    function removeFromArray($arr, $val){
-        for($i = 0; $i < count($arr); $i++)
-            if($arr[$i] == $val){
-                unset($arr[$i]);
-                break;
-            }
-        
-        return array_values($arr);
-    }
-?>
-
+<?php include 'php/sortTable_functions.php';?>
 <html>
     <head>
         <?php include_once "php/head.php" ?>
@@ -54,38 +22,9 @@
                     $set = explode(",", $_GET['set']);
         ?>
         <div class="root" style="padding-top:16px; padding-bottom:16px;">
-            <div class="filters">
-                <div style="border: 1px solid grey; padding:16px;">
-                    <h3 style="text-decoration-line: underline;">Filters</h3>
-                    <ul>
-                        <?php
-                            $sql = "SELECT `set_name`, `generation` FROM `set`
-                                    ORDER BY `generation` ASC, `set_id`";
-                            $result = mysqli_query($link, $sql) or die(mysqli_error($link));
-                            $currentGen = 1;
-                            echo '<strong>Search</strong><br/>';
-                            echo '<form method="get">';
-                                echo '<input type="text" name="q" class="searchField" style="" placeholder="search...">';
-                                echo '<input type="submit" value="Submit" class="searchSubmit"><br/><br/>';
-                            echo '</form>';
-                            echo '<strong>Set</strong><br/>';
-                            echo 'Generation 1<br/>';
-                            while($setName = mysqli_fetch_array($result)){
-                                if($currentGen < $setName[1]){
-                                    echo 'Generation ' . $setName[1] . '<br/>';
-                                    $currentGen = $setName[1];
-                                }
-                                echo '<div class="setFilter">';
-                                if(in_array($setName[0], $set))
-                                    echo '<input type="checkbox" id="' . $setName[0] . '" checked> <a href="search.php?' . updateQString($search, removeFromArray($set, $setName[0]), $orderByParam, $pageNum) . '">' . $setName[0] . '</a></input><br/>';
-                                else
-                                    echo '<input type="checkbox" id="' . $setName[0] . '"> <a href="search.php?' . updateQString($search, addToArray($set, $setName[0]), $orderByParam, $pageNum) . '">' . $setName[0] . '</a></input><br/>';
-                                echo '</div>';
-                            }
-                        ?>
-                    </ul>
-                </div>
-            </div>
+            <?php
+            $pageName = 'search';
+            include 'php/sortTable_filters.php'; ?>
             <div class="searchResults">
                 <table style="table-layout:fixed; width:100%;">
                     <thead>
