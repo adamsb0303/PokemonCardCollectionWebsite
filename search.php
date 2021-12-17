@@ -16,7 +16,7 @@
                     $orderByParam = $_GET['sort'];
             $search = "";
                 if(!empty($_GET['q']))
-                    $search = $_GET['q'];
+                    $search = addslashes($_GET['q']);
             $set = [];
                 if(!empty($_GET['set']))
                     $set = explode(",", $_GET['set']);

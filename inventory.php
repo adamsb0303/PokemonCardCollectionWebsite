@@ -18,14 +18,14 @@
                     $orderByParam = $_GET['sort'];
             $search = "";
                 if(!empty($_GET['q']))
-                    $search = $_GET['q'];
+                    $search = addslashes($_GET['q']);
             $set = [];
                 if(!empty($_GET['set']))
                     $set = explode(",", $_GET['set']);
 
         if($signedIn){
         ?>
-        <div class="root">
+        <div class="root" style="padding-top:16px; padding-bottom:16px;">
             <?php
             $pageName = 'inventory';
             include 'php/sortTable_filters.php';?>
