@@ -56,10 +56,10 @@
                                 if($i == 0){
                                     $sql .= "`set_name` = '" . $set[$i] . "' ";
                                     $countSQL .= "`set_name` = '" . $set[$i] . "' ";
+                                }else{
+                                    $sql .= "OR `set_name` = '" . $set[$i] . "' ";
+                                    $countSQL .= "OR `set_name` = '" . $set[$i] . "' ";
                                 }
-
-                                $sql .= "OR `set_name` = '" . $set[$i] . "' ";
-                                $countSQL .= "OR `set_name` = '" . $set[$i] . "' ";
 
                                 if($i == count($set) - 1 && $search != ""){
                                     $sql .= ") ";

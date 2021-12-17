@@ -42,8 +42,13 @@
                                     WHERE `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
                                     AND `user_key` = '" . $_COOKIE["Key"] . " '";
 
-                            $countSQL = "SELECT COUNT(`card_id`) FROM `card` 
-                                        JOIN `set` ON card.set_id = set.set_id ";
+                            $countSQL = "SELECT COUNT(`purchase_id`) FROM `collection`
+                                        JOIN `card` ON `collection`.`card_id` = `card`.`card_id`
+                                        JOIN `set` ON `card`.`set_id` = `set`.`set_id`
+                                        JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
+                                        JOIN `variant` ON `variant`.`variant_id` = `card`.`variant_id`
+                                        WHERE `collection`.`user_id` = '" . $_COOKIE["ID"] . " '";
+
                             if($search != "" || !empty($set)){
                                 $sql .= "AND ";
                                 $countSQL .= "AND ";
@@ -64,10 +69,10 @@
                                 if($i == 0){
                                     $sql .= "`set_name` = '" . $set[$i] . "' ";
                                     $countSQL .= "`set_name` = '" . $set[$i] . "' ";
+                                }else{
+                                    $sql .= "OR `set_name` = '" . $set[$i] . "' ";
+                                    $countSQL .= "OR `set_name` = '" . $set[$i] . "' ";
                                 }
-
-                                $sql .= "OR `set_name` = '" . $set[$i] . "' ";
-                                $countSQL .= "OR `set_name` = '" . $set[$i] . "' ";
 
                                 if($i == count($set) - 1 && $search != ""){
                                     $sql .= ") ";
