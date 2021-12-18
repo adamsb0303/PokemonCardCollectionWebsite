@@ -39,13 +39,18 @@
             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
             $card = mysqli_fetch_array($result);
         ?>
-        <div class="overlay" id="overlay">
+        <?php
+            if($result->num_rows == 0)
+                echo '<div class="overlay" style="display:none;" id="overlay">';
+            else
+                echo '<div class="overlay" style="display:block;" id="overlay">';
+        ?>
             <div class="root" style="background-color:white;height:75%;margin-top:6.25%;">
                 <div style="display:flex; justify-content:center; align-items:center; width: 50%;">
                     <image src="https://product-images.tcgplayer.com/<?=$card['product_id']?>.jpg" style="height:50%;width:auto;">
                 </div>
                 <div style="width:50%;">
-                    <text style="float:right" onClick="document.getElementById('overlay').style.display = 'none';">X</text>
+                    <text style="float:right" onClick="window.location.href='inventory.php?<?=updateQString($search, $set, $orderByParam, $pageNum)?>';">X</text>
                     <!--Old Collection Values-->
                     <div style="height:50%; display:flex; align-items:center;">
                         <?php
@@ -138,7 +143,7 @@
                             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
                             while($card = mysqli_fetch_array($result)){
                                 echo '<tr>';
-                                    echo '<td onClick="document.getElementById(\'overlay\').style.display = \'block\';">edit</td>';
+                                    echo '<td><button onClick="window.location.href=\'inventory.php?' . updateQString($search, $set, $orderByParam, $pageNum) . '&overlay=' . $card['purchase_id'] . '\';">Edit</button></td>';
                                     echo '<td><image src="https://product-images.tcgplayer.com/' . $card['product_id'] . '.jpg" style="height: 36pt; width: auto;"></image></td>';
                                     echo '<td style="text-align:left; width: 1em"><a href="./card.php?id=' . $card['card_id'] . '">' .  $card['card_name'] . '</a></td>';
                                     echo '<td>' . $card['variant_name'] . '</td>';
