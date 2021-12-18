@@ -8,8 +8,6 @@
     $index = 1;
     $start = $tic = time();
     while($setRow = mysqli_fetch_array($sets)){
-        if($setRow['set_id'] < 133)
-            continue;
         echo 'Updating: ' . $setRow['set_name'] . "\n";
         $setNum = $setRow['set_id'];
         $sql = "SELECT * FROM `card`
