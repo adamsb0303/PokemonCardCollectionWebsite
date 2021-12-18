@@ -8,6 +8,10 @@
     </head>
     <body>
         <?php
+            include 'php/header.php';
+            include_once 'php/connect.php';
+
+            //Table Sort Variables
             $pageNum = 1;
                 if(!empty($_GET['page']))
                     $pageNum = $_GET['page'];
@@ -23,8 +27,6 @@
             $overlayVal = 0;
                 if(!empty($_GET['overlay']))
                     $overlayVal = $_GET['overlay'];
-            include 'php/header.php';
-            include_once 'php/connect.php';
             
         if($signedIn){
             $sql = "SELECT * FROM `collection`
@@ -38,6 +40,45 @@
 
             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
             $card = mysqli_fetch_array($result);
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
+
+            //push form data to sql server
+            if(isset($_POST['submit'])){
+                $cardID = $card['card_id'];
+                $formValues = array($_COOKIE['ID'], $cardID);
+                $queryValues = array("`user_id`", "`card_id`");
+
+                if($_POST['condition'] != ''){
+                    array_push($queryValues, '`condition`');
+                    array_push($formValues, '\'' . $_POST['condition'] . '\'');
+                }
+                if($_POST['price'] != ''){
+                    array_push($queryValues, '`purchase_price`');
+                    array_push($formValues, $_POST['price']);
+
+                    $sql = "UPDATE user
+                            SET user_cost = (SELECT user_cost FROM user WHERE user_id = " . $_COOKIE['ID'] . ")+ " . $_POST['price'] . 
+                            " WHERE user_id = " .$_COOKIE['ID'];
+                    mysqli_query($link, $sql) or die(mysqli_error($link));
+                }
+                if($_POST['date'] != ''){
+                    array_push($queryValues, '`purchase_date`');
+                    array_push($formValues, '\'' . $_POST['date'] . '\'');
+                }
+
+                $sql = "UPDATE `collection` SET ";
+                for($i = 0; $i < count($queryValues); $i++){
+                    if($i != count($queryValues) - 1)
+                        $sql .= $queryValues[$i] . ' = ' . $formValues[$i] . ',';
+                    else
+                        $sql .= $queryValues[$i] . ' = ' . $formValues[$i];
+                }
+                $sql .= " WHERE `purchase_id` = " . $overlayVal;
+                mysqli_query($link, $sql) or die(mysqli_error($link));
+                header("Location: inventory.php?" . updateQString($search, $set, $orderByParam, $pageNum));
+            }
         ?>
         <?php
             if($result->num_rows == 0)
@@ -51,45 +92,28 @@
                 </div>
                 <div style="width:50%;">
                     <text style="float:right" onClick="window.location.href='inventory.php?<?=updateQString($search, $set, $orderByParam, $pageNum)?>';">X</text>
-                    <!--Old Collection Values-->
-                    <div style="height:50%; display:flex; align-items:center;">
-                        <?php
-                            if($result->num_rows == 0){
-                                echo "Collection entry not found";
-                            }else{
-                                echo "Old Entry<br>";
-                                echo "Name: " . $card['card_name'] . "<br>";
-                                echo "Variant: " . $card['variant_name'] . "<br>";
-                                echo "Set: " . $card['set_name'] . "<br>";
-                                echo "Num: " . $card['set_num'] . "<br>";
-                                echo "Spent: $" . $card['purchase_price'] . "<br>";
-                                echo "Date: " . $card['purchase_date'] . "<br>";
-                                echo "Condition: " . $card['condition'] . "<br>";
-                            }
-                        ?>
-                    </div>
                     <!--New Collection Values-->
-                    <div style="height:50%; display:flex; align-items:center;">
+                    <div style="height:100%; display:flex; align-items:center;">
                         <form method="post">
-                            <br><text>Inventory: </text><br/>
+                            <br><text>Edit Collection Entry: </text><br/>
                             <!--Price Purchased-->
                             <text>Price Purchased: </text>
-                            <input type="number" min="0" step="0.01" placeholder = "$0.00" name="price"/>
+                            <input type="number" min="0" step="0.01" placeholder = "$0.00" name="price" value="<?=$card['purchase_price']?>"/>
                             <button title="Calculates price based off potential pulls">From Pack</button>
                             <br/>
                             <!--Date Purchased-->
                             <text>Date Purchased: </text>
-                            <input type="date" name="date"></input>
+                            <input type="date" name="date" value="<?=$card['purchase_date']?>"></input>
                             <br/>
                             <!--Condition-->
                             <text>Condition: </text>
                             <select name="condition">
                                     <option></option>
-                                    <option value="NM">NM</option>
-                                    <option value="LP">LP</option>
-                                    <option value="MP">MP</option>
-                                    <option value="HP">HP</option>
-                                    <option value="DMG">DMG</option>
+                                    <option value="NM" <?php if($card['condition'] == 'NM') echo 'selected';?>>NM</option>
+                                    <option value="LP" <?php if($card['condition'] == 'LP') echo 'selected';?>>LP</option>
+                                    <option value="MP" <?php if($card['condition'] == 'MP') echo 'selected';?>>MP</option>
+                                    <option value="HP" <?php if($card['condition'] == 'HP') echo 'selected';?>>HP</option>
+                                    <option value="DMG" <?php if($card['condition'] == 'DMG') echo 'selected';?>>DMG</option>
                                 </select>
                             <br/>
                             <!--Submit-->
