@@ -44,6 +44,13 @@
             ini_set('display_startup_errors', 1);
             error_reporting(E_ALL);
 
+            //delete opened entry
+            if(isset($_POST['delete']) && $result->num_rows != 0){
+                $sql = "DELETE FROM `collection` WHERE `purchase_id` = " . $overlayVal;
+                mysqli_query($link, $sql) or die(mysqli_error($link));
+                header("Location: inventory.php?" . updateQString($search, $set, $orderByParam, $pageNum));
+            }
+
             //push form data to sql server
             if(isset($_POST['submit']) && $result->num_rows != 0){
                 $cardID = $card['card_id'];
@@ -120,12 +127,9 @@
                                 </select>
                             <br/>
                             <!--Submit-->
-                            <?php
-                            if(!$signedIn)
-                                echo '<input type="submit" name="submit" value="Submit" disabled/>';
-                            else
-                                echo '<input type="submit" name="submit" value="Submit"/>';?>
+                            <input type="submit" name="submit" value="Submit"/>
                             <br/><br/>
+                            <input type="submit" name="delete" value="Remove"/>
                         </form>
                     </div>
                 </div>
