@@ -2,12 +2,14 @@
     include_once "bearer_token.php";
     set_time_limit(60000);
 
-    $sql = "SELECT `set_id` FROM `set`";
+    $sql = "SELECT `set_id`,`set_name` FROM `set`";
     $sets = mysqli_query($link, $sql) or die(mysqli_error($link));
 
     $index = 1;
     $start = $tic = time();
     while($setRow = mysqli_fetch_array($sets)){
+        if($setRow['set_id'] < 133)
+            continue;
         echo 'Updating: ' . $setRow['set_name'] . "\n";
         $setNum = $setRow['set_id'];
         $sql = "SELECT * FROM `card`
@@ -32,9 +34,10 @@
             $index++;
         }
 
-        $sql = "UPDATE `set` SET `set_price` = (SELECT SUM(`market_price`) FROM `card` WHERE `set_id` = $setNum AND `variant_id` = 1),
-                                `Mset_price` = (SELECT SUM(`market_price`) FROM `card` WHERE `set_id` = $setNum)
+        $sql = "UPDATE `set` SET `set_price` = (SELECT COALESCE(SUM(`market_price`), 0) FROM `card` WHERE `set_id` = $setNum AND `variant_id` = 1),
+                                `Mset_price` = (SELECT COALESCE(SUM(`market_price`), 0) FROM `card` WHERE `set_id` = $setNum)
                 WHERE `set_id` = $setNum";
+        
         mysqli_query($link, $sql) or die(mysqli_error($link));
     }
     
