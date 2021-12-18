@@ -3,6 +3,7 @@
     margin: 0;
     border: 0;
     outline: 0;
+    font-size: 12pt;
 }
 
 a {
@@ -19,6 +20,11 @@ input[type=button], input[type=submit], button {
     text-align: center;
     color: #f0ecff;
     cursor:pointer;
+}
+
+input[type=number], input[type=date]{
+    border: solid black 1px;
+    padding: 1px;
 }
 
 table{
