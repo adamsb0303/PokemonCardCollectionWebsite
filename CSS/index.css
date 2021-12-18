@@ -10,6 +10,17 @@ a {
     color: black;
 }
 
+input[type=button], input[type=submit], button {
+    background-color:rgb(18, 18, 61);
+    height: 25px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
+    text-align: center;
+    color: #f0ecff;
+    cursor:pointer;
+}
+
 table{
     border-collapse: collapse;
 }
@@ -82,14 +93,6 @@ td {
     padding-right: 1rem;
     padding-left: 1rem;
     width:75%;
-}
-
-.searchSubmit {
-    background-color:rgb(18, 18, 61);
-    height: 25px;
-    width: 50px;
-    border-radius: 5px;
-    color: #f0ecff;
 }
 
 .pageSelect{
