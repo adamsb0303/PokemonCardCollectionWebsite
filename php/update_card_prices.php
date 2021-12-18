@@ -32,7 +32,7 @@
             $index++;
         }
 
-        $sql = "UPDATE `set` SET `set_price` = (SELECT COALESCE(SUM(`market_price`), 0) FROM `card` WHERE `set_id` = $setNum AND `order` <= " . $setRow['set_size'] . "),
+        $sql = "UPDATE `set` SET `set_price` = (SELECT COALESCE(SUM(`market_price`), 0) FROM `card` WHERE `set_id` = $setNum AND `order` <= " . $setRow['set_size'] . " AND `variant_id` = 1),
                                 `Mset_price` = (SELECT COALESCE(SUM(`market_price`), 0) FROM `card` WHERE `set_id` = $setNum)
                 WHERE `set_id` = $setNum";
         
