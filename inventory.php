@@ -101,15 +101,15 @@
                     <image src="https://product-images.tcgplayer.com/<?=$card['product_id']?>.jpg" style="height:50%;width:auto;">
                 </div>
                 <div style="width:50%;">
-                    <text style="float:right" onClick="window.location.href='inventory.php?<?=updateQString($search, $set, $orderByParam, $pageNum)?>';">X</text>
+                    <text style="float:right; padding-top: 8px; cursor:pointer; font-size:16pt;" onClick="window.location.href='inventory.php?<?=updateQString($search, $set, $orderByParam, $pageNum)?>';">X</text>
                     <!--New Collection Values-->
                     <div style="height:100%; display:flex; align-items:center;">
                         <form method="post">
                             <br><text>Edit Collection Entry: </text><br/>
                             <!--Price Purchased-->
                             <text>Price Purchased: </text>
-                            <input type="number" min="0" step="0.01" placeholder = "$0.00" name="price" value="<?=$card['purchase_price']?>"/>
-                            <button title="Calculates price based off potential pulls">From Pack</button>
+                            <input type="number" min="0" step="0.01" placeholder = "NULL" name="price" value="<?=$card['purchase_price']?>"/>
+                            <!--<button title="Calculates price based off potential pulls">From Pack</button>-->
                             <br/>
                             <!--Date Purchased-->
                             <text>Date Purchased: </text>
@@ -128,8 +128,8 @@
                             <br/>
                             <!--Submit-->
                             <input type="submit" name="submit" value="Submit"/>
-                            <br/><br/>
-                            <input type="submit" name="delete" value="Remove"/>
+                            <!--Remove-->
+                            <input style="margin-left: 25%;" type="submit" name="delete" value="Remove"/>
                         </form>
                     </div>
                 </div>

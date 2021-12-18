@@ -22,9 +22,13 @@ input[type=button], input[type=submit], button {
     cursor:pointer;
 }
 
-input[type=number], input[type=date]{
+input[type=number], input[type=date], select{
     border: solid black 1px;
     padding: 1px;
+}
+
+form > *{
+    margin: 5px;
 }
 
 table{

@@ -107,8 +107,8 @@
                             <br><text>Inventory: </text><br/>
                             <!--Price Purchased-->
                             <text>Price Purchased: </text>
-                            <input type="number" min="0" step="0.01" placeholder = "$0.00" name="price"/>
-                            <button title="Calculates price based off potential pulls">From Pack</button>
+                            <input type="number" min="0" step="0.01" name="price"/>
+                            <!--<button title="Calculates price based off potential pulls">From Pack</button>-->
                             <br/>
                             <!--Date Purchased-->
                             <text>Date Purchased: </text>
