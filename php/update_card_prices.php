@@ -2,7 +2,7 @@
     include_once "bearer_token.php";
     set_time_limit(60000);
 
-    $sql = "SELECT `set_id`,`set_name` FROM `set`";
+    $sql = "SELECT `set_id`,`set_name`,`set_size` FROM `set`";
     $sets = mysqli_query($link, $sql) or die(mysqli_error($link));
 
     $index = 1;
@@ -32,7 +32,7 @@
             $index++;
         }
 
-        $sql = "UPDATE `set` SET `set_price` = (SELECT COALESCE(SUM(`market_price`), 0) FROM `card` WHERE `set_id` = $setNum AND `variant_id` = 1),
+        $sql = "UPDATE `set` SET `set_price` = (SELECT COALESCE(SUM(`market_price`), 0) FROM `card` WHERE `set_id` = $setNum AND `order` <= " . $setRow['set_size'] . "),
                                 `Mset_price` = (SELECT COALESCE(SUM(`market_price`), 0) FROM `card` WHERE `set_id` = $setNum)
                 WHERE `set_id` = $setNum";
         
