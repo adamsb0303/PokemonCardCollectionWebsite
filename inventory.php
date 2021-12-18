@@ -7,6 +7,17 @@
         <title>Inventory</title>
     </head>
     <body>
+        <div class="overlay" id="overlay" onClick="document.getElementById('overlay').style.display = 'none';">
+            <div class="root" style="background-color:white;height:75%;margin-top:6.25%;">
+                <div style="display:flex; justify-content:center; align-items:center; width: 50%;">
+                    <image src="https://product-images.tcgplayer.com/219058.jpg" style="height:50%;width:auto;">
+                </div>
+                <div style="width:50%;">
+                    <div style="height:50%;">Current</div>
+                    <div style="height:50%;">New</div>
+                </div>
+            </div>
+        </div>
         <?php
             include 'php/header.php';
             include_once 'php/connect.php';
@@ -30,7 +41,7 @@
             $pageName = 'inventory';
             include 'php/sortTable_filters.php';?>
             <div class="searchResults">
-                <table>
+                <table style="width:100%;">
                     <thead>
                         <?php
                             //Basic query
@@ -64,6 +75,7 @@
                             $result = mysqli_query($link, $sql) or die(mysqli_error($link));
                             while($card = mysqli_fetch_array($result)){
                                 echo '<tr>';
+                                    echo '<td onClick="document.getElementById(\'overlay\').style.display = \'block\';">edit</td>';
                                     echo '<td><image src="https://product-images.tcgplayer.com/' . $card['product_id'] . '.jpg" style="height: 36pt; width: auto;"></image></td>';
                                     echo '<td style="text-align:left; width: 1em"><a href="./card.php?id=' . $card['card_id'] . '">' .  $card['card_name'] . '</a></td>';
                                     echo '<td>' . $card['variant_name'] . '</td>';

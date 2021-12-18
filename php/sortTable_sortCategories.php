@@ -3,7 +3,7 @@ $sortValues;
 if($pageName == 'search')
     $sortValues = array("Name", "Variant", "Set", "Num", "Price");
 if($pageName == 'inventory')
-    $sortValues = array("Name", "Variant", "Set", "Num", "Current Market Price", "Purchase Date", "Condition", "Gain");
+    $sortValues = array("Name", "Variant", "Set", "Num", "Price", "Date", "Condition", "Gain");
 
 if($search != "" || !empty($set)){
     $sql .= "AND ";
@@ -45,8 +45,7 @@ $sortDirection = ($sortNum == 1) ? "ASC" : "DESC";
 $sortCategory = ($sortNum == 1 || $sortNum == 2) ? $sortCategory : "";
 
 //card image
-if($pageName == 'search')
-    echo '<th style="width:5%;"></th>';
+echo '<th style="width:5%;"></th>';
 echo '<th style="width:10%;"></th>';
 
 //Sort Name
