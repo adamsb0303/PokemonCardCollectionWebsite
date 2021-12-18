@@ -8,6 +8,7 @@
     $index = 1;
     $start = $tic = time();
     while($setRow = mysqli_fetch_array($sets)){
+        echo 'Updating: ' . $setRow['set_name'] . "\n";
         $setNum = $setRow['set_id'];
         $sql = "SELECT * FROM `card`
                 JOIN `set` ON `set`.`set_id` = `card`.`set_id`
@@ -17,7 +18,6 @@
 
         while($productRow = mysqli_fetch_array($products)){
             if($productRow['product_id'] != 0){
-                    echo 'Updating: ' . $productRow['set_name'] . ' | ' . $productRow['card_name'] . "\n";
                     updateCardPrice($productRow['product_id'], $bearerToken);
                 }
             //300 requests per minute max
