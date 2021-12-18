@@ -10,6 +10,7 @@
                 echo '<strong>Search</strong><br/>';
                 echo '<form method="get">';
                     echo '<input type="text" name="q" class="searchField" style="" value="' . $search . '" placeholder="search...">';
+                    echo '<input type="hidden" name="set" value="' . implode(",", $set) . '">';
                     echo '<input type="submit" value="Submit" class="searchSubmit"><br/><br/>';
                 echo '</form>';
                 echo '<strong>Set</strong><br/>';
