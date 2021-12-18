@@ -45,28 +45,31 @@
             error_reporting(E_ALL);
 
             //push form data to sql server
-            if(isset($_POST['submit'])){
+            if(isset($_POST['submit']) && $result->num_rows != 0){
                 $cardID = $card['card_id'];
                 $formValues = array($_COOKIE['ID'], $cardID);
                 $queryValues = array("`user_id`", "`card_id`");
 
-                if($_POST['condition'] != ''){
-                    array_push($queryValues, '`condition`');
-                    array_push($formValues, '\'' . $_POST['condition'] . '\'');
-                }
-                if($_POST['price'] != ''){
-                    array_push($queryValues, '`purchase_price`');
-                    array_push($formValues, $_POST['price']);
+                $price = $_POST['price'] == '' ? 'NULL' : $_POST['price'];
+                $date = $_POST['date'] == '' ? 'NULL' : '\'' . $_POST['date'] . '\'';
+                $condition = $_POST['condition'] == '' ? 'NULL' : '\'' . $_POST['condition'] . '\'';
 
-                    $sql = "UPDATE user
-                            SET user_cost = (SELECT user_cost FROM user WHERE user_id = " . $_COOKIE['ID'] . ")+ " . $_POST['price'] . 
-                            " WHERE user_id = " .$_COOKIE['ID'];
-                    mysqli_query($link, $sql) or die(mysqli_error($link));
-                }
-                if($_POST['date'] != ''){
-                    array_push($queryValues, '`purchase_date`');
-                    array_push($formValues, '\'' . $_POST['date'] . '\'');
-                }
+        
+                array_push($queryValues, '`purchase_price`');
+                array_push($formValues, $price);
+
+                array_push($queryValues, '`purchase_date`');
+                array_push($formValues, $date);
+
+                array_push($queryValues, '`condition`');
+                array_push($formValues, $condition);
+
+                /*$sql = "UPDATE user
+                        SET user_cost = (SELECT user_cost FROM user WHERE user_id = " . $_COOKIE['ID'] . ")+ (" . 
+                        $_POST['price'] . " - (SELECT purchase_price FROM collection WHERE purchase_id = " . $overlayVal . "))" . 
+                        " WHERE user_id = " . $_COOKIE['ID'];
+                mysqli_query($link, $sql) or die(mysqli_error($link));*/
+                
 
                 $sql = "UPDATE `collection` SET ";
                 for($i = 0; $i < count($queryValues); $i++){
