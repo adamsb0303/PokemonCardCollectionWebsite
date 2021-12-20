@@ -48,6 +48,22 @@
             if(isset($_POST['delete']) && $result->num_rows != 0){
                 $sql = "DELETE FROM `collection` WHERE `purchase_id` = " . $overlayVal;
                 mysqli_query($link, $sql) or die(mysqli_error($link));
+
+                //update user cost
+                $sql = "UPDATE user
+                        SET user_cost = (SELECT COALESCE(SUM(`purchase_price`), 0) FROM `collection` WHERE user_id = " . $_COOKIE['ID'] . ")"  .
+                        " WHERE user_id = " . $_COOKIE['ID'];
+                mysqli_query($link, $sql) or die(mysqli_error($link));
+
+                //update user value
+                $sql = "UPDATE user
+                        SET user_value = 
+                        (SELECT COALESCE(SUM(market_price), 0) FROM `collection` 
+                        JOIN `card` ON `card`.`card_id` = `collection`.`card_id`
+                        WHERE `user_id` = " . $_COOKIE['ID'] . ")" . 
+                        " WHERE user_id = " . $_COOKIE['ID'];
+                mysqli_query($link, $sql) or die(mysqli_error($link));
+
                 header("Location: inventory.php?" . updateQString($search, $set, $orderByParam, $pageNum));
             }
 
@@ -70,14 +86,7 @@
 
                 array_push($queryValues, '`condition`');
                 array_push($formValues, $condition);
-
-                /*$sql = "UPDATE user
-                        SET user_cost = (SELECT user_cost FROM user WHERE user_id = " . $_COOKIE['ID'] . ")+ (" . 
-                        $_POST['price'] . " - (SELECT purchase_price FROM collection WHERE purchase_id = " . $overlayVal . "))" . 
-                        " WHERE user_id = " . $_COOKIE['ID'];
-                mysqli_query($link, $sql) or die(mysqli_error($link));*/
                 
-
                 $sql = "UPDATE `collection` SET ";
                 for($i = 0; $i < count($queryValues); $i++){
                     if($i != count($queryValues) - 1)
@@ -87,6 +96,22 @@
                 }
                 $sql .= " WHERE `purchase_id` = " . $overlayVal;
                 mysqli_query($link, $sql) or die(mysqli_error($link));
+
+                //update user cost
+                $sql = "UPDATE user
+                        SET user_cost = (SELECT COALESCE(SUM(`purchase_price`), 0) FROM `collection` WHERE user_id = " . $_COOKIE['ID'] . ")"  .
+                        " WHERE user_id = " . $_COOKIE['ID'];
+                mysqli_query($link, $sql) or die(mysqli_error($link));
+
+                //update user value
+                $sql = "UPDATE user
+                        SET user_value = 
+                        (SELECT COALESCE(SUM(market_price), 0) FROM `collection` 
+                        JOIN `card` ON `card`.`card_id` = `collection`.`card_id`
+                        WHERE `user_id` = " . $_COOKIE['ID'] . ")" . 
+                        " WHERE user_id = " . $_COOKIE['ID'];
+                mysqli_query($link, $sql) or die(mysqli_error($link));
+
                 header("Location: inventory.php?" . updateQString($search, $set, $orderByParam, $pageNum));
             }
         ?>
