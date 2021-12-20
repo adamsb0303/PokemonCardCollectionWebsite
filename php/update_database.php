@@ -32,7 +32,9 @@
     $result = exec("mysqldump pokemon --password='$password' --user='$user' --single-transaction > " . $backup_file);
     
     if(empty($result))
-        echo "Backed up successfully";
+        echo "Backed up successfully\n";
     else
         echo $result;
+
+    echo "Completed database update on " . date("Y/m/d") . " at " . date("h:i:s a") . "CST";
 ?>
