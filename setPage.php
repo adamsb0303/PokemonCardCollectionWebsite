@@ -38,6 +38,9 @@
                 $cardTable.= '<th>' .
                     'Owned' .
                 '</th>';
+            //Variables to track total market values of user's owned cards
+            $userSumPrice = 0;
+            $userSumMasterPrice = 0;
             while($variant = mysqli_fetch_array($variant_result)){
                 $cardAmount++;
                 if($variant['variant_name'] !== 'Normal'){
@@ -87,8 +90,12 @@
                         $collectionCheck = mysqli_fetch_array($collectionCheckResult);
                         if($collectionCheck == NULL)
                             $cardTable .= '<text style="color:red">X</text>';
-                        else
+                        else{
+                            if($variant['variant_id'] == 1)
+                                $userSumPrice += $variant['market_price'];
+                            $userSumMasterPrice += $variant['market_price'];
                             $cardTable .= '<text style="color:green">✓</text>';
+                        }
                     $cardTable .= '</td>';
                 }
             '</tr>';
@@ -97,25 +104,6 @@
 
 
             if($signedIn){
-                $sql = "SELECT SUM(`market_price`) FROM `collection`
-                        JOIN `card` ON collection.card_id = card.card_id
-                        JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
-                        WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')
-                        AND `variant_id` = 1
-                        AND `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
-                        AND `user_key` = '" . $_COOKIE["Key"] . "'";
-                $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
-                $sumMarketPrice = mysqli_fetch_array($userInfoResult);
-
-                $sql = "SELECT SUM(`market_price`) FROM `collection`
-                        JOIN `card` ON collection.card_id = card.card_id
-                        JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
-                        WHERE `set_id` = (SELECT `set_id` FROM `set` WHERE set_name = '$name')
-                        AND `collection`.`user_id` = '" . $_COOKIE["ID"] . "'
-                        AND `user_key` = '" . $_COOKIE["Key"] . "'";
-                $userInfoResult = mysqli_query($link, $sql) or die(mysqli_error($link));
-                $mSumMarketPrice = mysqli_fetch_array($userInfoResult);
-
                 $sql = "SELECT COUNT(DISTINCT collection.card_id) FROM `collection`
                         JOIN `card` ON collection.card_id = card.card_id
                         JOIN `user` ON `collection`.`user_id` = `user`.`user_id`
@@ -150,9 +138,9 @@
                     echo '<br/>';
                     echo '<strong>Remaining</strong><br/>';
                     echo 'Set: <text id="size">' . ($row['set_size'] - $cardsOwned[0]) . '</text><br />';
-                    echo 'Set Market Price: $<text id="setPrice">' . number_format($row['set_price'] - $sumMarketPrice[0], 2) . '</text><br />';
+                    echo 'Set Market Price: $<text id="setPrice">' . number_format($row['set_price'] - $userSumPrice, 2) . '</text><br />';
                     echo 'Master Set: <text id="mSize">' . ($cardAmount - $mCardsOwned[0]) . '</text><br />';
-                    echo 'Master Set Market Price: $<text id="mSetPrice">' . number_format($row['Mset_price'] - $mSumMarketPrice[0], 2) . '</text><br />';
+                    echo 'Master Set Market Price: $<text id="mSetPrice">' . number_format($row['Mset_price'] - $userSumMasterPrice, 2) . '</text><br />';
                 }
             echo '</div><br/>';
 

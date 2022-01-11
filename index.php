@@ -19,7 +19,8 @@
                 echo "Inventory Value: $" . $user_values[0] . "<br/>";
                 echo "Inventory Cost: $" . $user_values[1] . "<br/>";
                 echo "Total Profit: $" . ($user_values[0] - $user_values[1]);
-            }
+            }else
+                echo "Please sign in with your google account"
         ?>
     </body>
 </html>
